@@ -5,14 +5,16 @@
   "scripts": {
     "build": "tsc -b",
     "start": "node  dist/index.js",
-    "dev": "nodemon --delay 0.5 --signal SIGINT -x 'NODE_ENV=development node --inspect=9678' --watch 'dist/**/*.js' dist/index.js"
+    "dev": "nodemon --delay 0.5 --signal SIGINT -x 'node -r ../../env.js --inspect=9678' --watch 'dist/**/*.js' dist/index.js"
   },
   "dependencies": {
     "@types/express": "^4.17.13",
     "chalk": "4.0.0",
     "express": "4.17.1",
+    "graphile-build": "^4.12.0",
     "next": "11.1.2",
     "nodemon": "2.0.13",
+    "pg": "^8.7.1",
     "postgraphile": "^4.12.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",

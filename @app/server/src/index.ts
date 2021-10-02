@@ -2,11 +2,13 @@ import chalk from 'chalk';
 import express from 'express';
 
 import installNextJs from './middleware/installNextJs';
+import installPostgraphile from './middleware/installPostgraphile';
 
 async function main() {
   const app = express();
 
   await installNextJs(app);
+  installPostgraphile(app);
 
   const PORT = 3000;
   app.listen(PORT, () => {
