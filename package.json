@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc:watch": "tsc -b --watch --preserveWatchOutput",
+    "dev": "concurrently --kill-others --names 'TSC,DEV' --prefix '({name})' 'pnpm run tsc:watch' 'pnpm run dev --recursive'"
   },
   "author": "Ludwig Bäcklund",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.3.0",
+    "typescript": "4.4.3"
+  }
 }
