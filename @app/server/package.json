@@ -8,6 +8,7 @@
     "dev": "nodemon --delay 0.5 --signal SIGINT -x 'node -r ../../env.js --inspect=9678' --watch 'dist/**/*.js' dist/index.js"
   },
   "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "@types/express": "^4.17.13",
     "chalk": "4.0.0",
     "express": "4.17.1",

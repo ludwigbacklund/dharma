@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc:watch": "tsc -b --watch --preserveWatchOutput",
-    "dev": "concurrently --kill-others --names 'TSC,DEV' --prefix '({name})' 'pnpm run tsc:watch' 'pnpm run dev --recursive'"
+    "dev": "concurrently --kill-others --names 'TSC,DEV,WATCH' --prefix '({name})' 'pnpm run tsc:watch' 'pnpm run dev --recursive' 'pnpm run watch --recursive'"
   },
   "author": "Ludwig Bäcklund",
   "license": "MIT",

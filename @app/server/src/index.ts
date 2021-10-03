@@ -7,8 +7,8 @@ import installPostgraphile from './middleware/installPostgraphile';
 async function main() {
   const app = express();
 
-  await installNextJs(app);
   installPostgraphile(app);
+  await installNextJs(app);
 
   const PORT = 3000;
   app.listen(PORT, () => {

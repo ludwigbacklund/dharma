@@ -1,4 +1,6 @@
-/** @type {import('next').NextConfig} */
 module.exports = {
-  reactStrictMode: true,
-}
+  env: {
+    ENV: process.env.NODE_ENV,
+    ROOT_URL: process.env.ROOT_URL,
+  },
+};

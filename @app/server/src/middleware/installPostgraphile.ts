@@ -1,6 +1,7 @@
 import { Express, Request, Response } from 'express';
 import { Pool } from 'pg';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
+import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -11,6 +12,8 @@ const postgraphileOptions: PostGraphileOptions<Request, Response> = {
   graphiql: isDev,
   // Use a fancier GraphiQL with `prettier` for formatting, and header editing.
   enhanceGraphiql: true,
+  // ignoreIndexes=false: honour your DB indexes - only expose things that are fast
+  ignoreIndexes: false,
   // Allow EXPLAIN in development (you can replace this with a callback function if you want more control)
   allowExplain: isDev,
   // https://www.graphile.org/postgraphile/debugging/
@@ -36,6 +39,8 @@ const postgraphileOptions: PostGraphileOptions<Request, Response> = {
   watchPg: isDev,
   // Keep data/schema.graphql up to date
   sortExport: true,
+  // Plugins to customize GraphQL schema
+  appendPlugins: [PgSimplifyInflectorPlugin],
   exportGqlSchemaPath: isDev
     ? `${__dirname}/../../../../data/schema.graphql`
     : undefined,
@@ -50,7 +55,7 @@ const pgPool = new Pool({
 export default function installPostGraphile(app: Express) {
   const middleware = postgraphile<Request, Response>(
     pgPool,
-    'public',
+    'app_public',
     postgraphileOptions,
   );
 
