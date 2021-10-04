@@ -9,9 +9,17 @@ const GlobalStyle = createGlobalStyle`
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
-
+  
   body {
-    min-width: 320px;
+    min-width: 375px;
+  }
+
+  p, span, button, input, textarea, label, h1, h2, h3 {
+    color: #3a3a3a;
+  }
+
+  h1, h2, h3 {
+    font-weight: normal;
   }
 `;
 

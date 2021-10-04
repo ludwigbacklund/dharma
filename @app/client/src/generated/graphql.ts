@@ -57,7 +57,7 @@ export type Company = Node & {
   /** Reads and enables pagination through a set of `Dish`. */
   dishes: DishesConnection;
   id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `User`. */
@@ -95,7 +95,7 @@ export type CompanyCondition = {
 /** An input for mutations affecting `Company` */
 export type CompanyInput = {
   id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
 };
 
 /** Represents an update to a `Company`. Fields that are set will be updated. */
@@ -434,12 +434,15 @@ export type Dish = Node & {
   /** Reads a single `Company` that is related to this `Dish`. */
   company?: Maybe<Company>;
   companyId: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Order`. */
   orders: OrdersConnection;
+  priceInSek: Scalars['Int'];
 };
 
 
@@ -464,15 +467,21 @@ export type DishCondition = {
 /** An input for mutations affecting `Dish` */
 export type DishInput = {
   companyId: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  priceInSek: Scalars['Int'];
 };
 
 /** Represents an update to a `Dish`. Fields that are set will be updated. */
 export type DishPatch = {
   companyId?: Maybe<Scalars['Int']>;
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  imageUrl?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  priceInSek?: Maybe<Scalars['Int']>;
 };
 
 /** A connection to a list of `Dish` values. */
@@ -1100,7 +1109,7 @@ export type User = Node & {
   company?: Maybe<Company>;
   companyId: Scalars['Int'];
   id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Order`. */
@@ -1130,7 +1139,7 @@ export type UserCondition = {
 export type UserInput = {
   companyId: Scalars['Int'];
   id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
 };
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
@@ -1173,18 +1182,173 @@ export enum UsersOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
+export type HeaderQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HeaderQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string } | null | undefined } | null | undefined };
+
+export type DishQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DishQuery = { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined } | null | undefined };
+
+export type EditDishMutationVariables = Exact<{
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+}>;
+
+
+export type EditDishMutation = { __typename?: 'Mutation', updateDish?: { __typename?: 'UpdateDishPayload', query?: { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+
 export type HomeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomeQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', nodes: Array<{ __typename?: 'User', id: number, name?: string | null | undefined } | null | undefined> } | null | undefined };
+export type HomeQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string, dishes: { __typename?: 'DishesConnection', nodes: Array<{ __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined, description?: string | null | undefined, priceInSek: number } | null | undefined> } } | null | undefined } | null | undefined };
 
 
-export const HomeDocument = gql`
-    query Home {
-  users {
-    nodes {
+export const HeaderDocument = gql`
+    query Header {
+  user(id: 1) {
+    id
+    name
+    company {
       id
       name
+    }
+  }
+}
+    `;
+
+/**
+ * __useHeaderQuery__
+ *
+ * To run a query within a React component, call `useHeaderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHeaderQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHeaderQuery(baseOptions?: Apollo.QueryHookOptions<HeaderQuery, HeaderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HeaderQuery, HeaderQueryVariables>(HeaderDocument, options);
+      }
+export function useHeaderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HeaderQuery, HeaderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HeaderQuery, HeaderQueryVariables>(HeaderDocument, options);
+        }
+export type HeaderQueryHookResult = ReturnType<typeof useHeaderQuery>;
+export type HeaderLazyQueryHookResult = ReturnType<typeof useHeaderLazyQuery>;
+export type HeaderQueryResult = Apollo.QueryResult<HeaderQuery, HeaderQueryVariables>;
+export const DishDocument = gql`
+    query Dish($id: Int!) {
+  dish(id: $id) {
+    id
+    name
+    description
+    imageUrl
+  }
+}
+    `;
+
+/**
+ * __useDishQuery__
+ *
+ * To run a query within a React component, call `useDishQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDishQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDishQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDishQuery(baseOptions: Apollo.QueryHookOptions<DishQuery, DishQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DishQuery, DishQueryVariables>(DishDocument, options);
+      }
+export function useDishLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DishQuery, DishQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DishQuery, DishQueryVariables>(DishDocument, options);
+        }
+export type DishQueryHookResult = ReturnType<typeof useDishQuery>;
+export type DishLazyQueryHookResult = ReturnType<typeof useDishLazyQuery>;
+export type DishQueryResult = Apollo.QueryResult<DishQuery, DishQueryVariables>;
+export const EditDishDocument = gql`
+    mutation EditDish($id: Int!, $name: String!, $description: String, $imageUrl: String) {
+  updateDish(
+    input: {id: $id, patch: {name: $name, description: $description, imageUrl: $imageUrl}}
+  ) {
+    query {
+      dish(id: $id) {
+        id
+        name
+        description
+        imageUrl
+      }
+    }
+  }
+}
+    `;
+export type EditDishMutationFn = Apollo.MutationFunction<EditDishMutation, EditDishMutationVariables>;
+
+/**
+ * __useEditDishMutation__
+ *
+ * To run a mutation, you first call `useEditDishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditDishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editDishMutation, { data, loading, error }] = useEditDishMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      imageUrl: // value for 'imageUrl'
+ *   },
+ * });
+ */
+export function useEditDishMutation(baseOptions?: Apollo.MutationHookOptions<EditDishMutation, EditDishMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditDishMutation, EditDishMutationVariables>(EditDishDocument, options);
+      }
+export type EditDishMutationHookResult = ReturnType<typeof useEditDishMutation>;
+export type EditDishMutationResult = Apollo.MutationResult<EditDishMutation>;
+export type EditDishMutationOptions = Apollo.BaseMutationOptions<EditDishMutation, EditDishMutationVariables>;
+export const HomeDocument = gql`
+    query Home {
+  user(id: 1) {
+    id
+    name
+    company {
+      id
+      name
+      dishes {
+        nodes {
+          id
+          name
+          imageUrl
+          description
+          priceInSek
+        }
+      }
     }
   }
 }

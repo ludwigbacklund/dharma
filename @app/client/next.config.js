@@ -3,4 +3,7 @@ module.exports = {
     ENV: process.env.NODE_ENV,
     ROOT_URL: process.env.ROOT_URL,
   },
+  images: {
+    domains: ['images.pexels.com'],
+  },
 };

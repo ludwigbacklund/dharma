@@ -3,29 +3,20 @@ import styled from 'styled-components';
 import { media } from '../utils/styling';
 
 interface SectionProps {
-  grow?: boolean;
-  color?: string;
-  boxShadow?: string;
   className?: string;
 }
 
-export const Section: React.FC<SectionProps> = ({
-  grow,
-  color,
-  boxShadow,
-  className,
-  children,
-}) => (
-  <SectionWrapper grow={grow} color={color} boxShadow={boxShadow}>
+export const Section: React.FC<SectionProps> = ({ className, children }) => (
+  <SectionWrapper>
     <SectionInnerWrapper className={className}>{children}</SectionInnerWrapper>
   </SectionWrapper>
 );
 
 const SectionWrapper = styled.section<Partial<SectionProps>>`
-  padding: 16px;
+  padding: 24px 16px;
 
   ${media.tabletUp} {
-    padding: 16px 32px;
+    padding: 24px 32px;
   }
 `;
 

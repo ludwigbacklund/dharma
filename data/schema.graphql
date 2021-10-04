@@ -63,7 +63,7 @@ type Company implements Node {
     orderBy: [DishesOrderBy!] = [PRIMARY_KEY_ASC]
   ): DishesConnection!
   id: Int!
-  name: String
+  name: String!
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -111,7 +111,7 @@ input CompanyCondition {
 """An input for mutations affecting `Company`"""
 input CompanyInput {
   id: Int
-  name: String
+  name: String!
 }
 
 """
@@ -492,8 +492,10 @@ type Dish implements Node {
   """Reads a single `Company` that is related to this `Dish`."""
   company: Company
   companyId: Int!
+  description: String
   id: Int!
-  name: String
+  imageUrl: String
+  name: String!
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -528,6 +530,7 @@ type Dish implements Node {
     """The method to use when ordering `Order`."""
     orderBy: [OrdersOrderBy!] = [PRIMARY_KEY_ASC]
   ): OrdersConnection!
+  priceInSek: Int!
 }
 
 """
@@ -544,15 +547,21 @@ input DishCondition {
 """An input for mutations affecting `Dish`"""
 input DishInput {
   companyId: Int!
+  description: String
   id: Int
-  name: String
+  imageUrl: String
+  name: String!
+  priceInSek: Int!
 }
 
 """Represents an update to a `Dish`. Fields that are set will be updated."""
 input DishPatch {
   companyId: Int
+  description: String
   id: Int
+  imageUrl: String
   name: String
+  priceInSek: Int
 }
 
 """A connection to a list of `Dish` values."""
@@ -1271,7 +1280,7 @@ type User implements Node {
   company: Company
   companyId: Int!
   id: Int!
-  name: String
+  name: String!
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -1323,7 +1332,7 @@ input UserCondition {
 input UserInput {
   companyId: Int!
   id: Int
-  name: String
+  name: String!
 }
 
 """Represents an update to a `User`. Fields that are set will be updated."""
