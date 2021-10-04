@@ -8,15 +8,7 @@ import { Section } from '../components/Section';
 import { useHomeQuery } from '../generated/graphql';
 import { media } from '../utils/styling';
 import { withGraphql } from '../utils/with-apollo';
-
-const Heading = styled.h1`
-  font-size: 24px;
-  margin: 16px 0 24px 0;
-
-  ${media.tabletDown} {
-    margin: 0 0 16px 0;
-  }
-`;
+import { Heading } from '../components/Heading';
 
 const Dishes = styled.div`
   display: grid;
@@ -28,7 +20,7 @@ const Dishes = styled.div`
   }
 `;
 
-const Dish = styled.div`
+const Box = styled.div`
   display: flex;
   width: 100%;
   background: white;
@@ -49,6 +41,7 @@ const DishImage = styled(Image)`
 
 const DishInfo = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   padding: 16px;
@@ -87,6 +80,21 @@ const EditDishAnchor = styled.a`
   }
 `;
 
+const AddDishBox = styled(Box).attrs({ as: 'a' })`
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 125px;
+
+  :hover {
+    opacity: 0.5;
+  }
+`;
+
+const AddDishText = styled.span`
+  font-size: 32px;
+`;
+
 const Home = () => {
   const { data, loading, error } = useHomeQuery();
 
@@ -112,7 +120,7 @@ const Home = () => {
             if (!dish) return;
 
             return (
-              <Dish key={dish.id}>
+              <Box key={dish.id}>
                 {dish.imageUrl && (
                   <ImageWrapper>
                     <DishImage
@@ -132,15 +140,20 @@ const Home = () => {
                     )}
                   </div>
                   <DishBottomWrapper>
-                    <DishPrice>{dish.priceInSek}kr</DishPrice>
+                    <DishPrice>{dish.priceInSek.toLocaleString()} kr</DishPrice>
                     <Link href={`/edit-dish/${dish.id}`}>
                       <EditDishAnchor>Edit dish</EditDishAnchor>
                     </Link>
                   </DishBottomWrapper>
                 </DishInfo>
-              </Dish>
+              </Box>
             );
           })}
+          <Link href='/add-dish'>
+            <AddDishBox>
+              <AddDishText>Add Dish</AddDishText>
+            </AddDishBox>
+          </Link>
         </Dishes>
       </Section>
     </Page>

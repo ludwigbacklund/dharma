@@ -2,6 +2,7 @@ import { forwardRef, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import { media } from '../utils/styling';
+import { ErrorNotice } from './ErrorNotice';
 
 const InputField = styled.input`
   background-color: white;
@@ -35,15 +36,23 @@ const OptionalText = styled.p`
   margin: 0 0 0 8px;
 `;
 
+const StyledErrorNotice = styled(ErrorNotice)`
+  margin: 8px 0 0 0;
+`;
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   tag?: 'input' | 'textarea';
   label?: string;
   optional?: boolean;
+  errorMessage?: string;
   className?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ name, tag = 'input', label, className, optional, ...props }, ref) => (
+  (
+    { name, tag = 'input', label, errorMessage, className, optional, ...props },
+    ref,
+  ) => (
     <InputWrapper className={className}>
       {label && (
         <LabelWrapper>
@@ -53,6 +62,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </LabelWrapper>
       )}
       <InputField as={tag} name={name} ref={ref} {...props} />
+      {errorMessage && <StyledErrorNotice message={errorMessage} />}
     </InputWrapper>
   ),
 );

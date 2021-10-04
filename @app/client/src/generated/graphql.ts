@@ -1187,22 +1187,33 @@ export type HeaderQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HeaderQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string } | null | undefined } | null | undefined };
 
+export type AddDishMutationVariables = Exact<{
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  priceInSek: Scalars['Int'];
+}>;
+
+
+export type AddDishMutation = { __typename?: 'Mutation', createDish?: { __typename?: 'CreateDishPayload', company?: { __typename?: 'Company', id: number, dishes: { __typename?: 'DishesConnection', nodes: Array<{ __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined, description?: string | null | undefined, priceInSek: number } | null | undefined> } } | null | undefined } | null | undefined };
+
 export type DishQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DishQuery = { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined } | null | undefined };
+export type DishQuery = { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined, priceInSek: number } | null | undefined };
 
 export type EditDishMutationVariables = Exact<{
   id: Scalars['Int'];
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  priceInSek: Scalars['Int'];
 }>;
 
 
-export type EditDishMutation = { __typename?: 'Mutation', updateDish?: { __typename?: 'UpdateDishPayload', query?: { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type EditDishMutation = { __typename?: 'Mutation', updateDish?: { __typename?: 'UpdateDishPayload', query?: { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined, priceInSek: number } | null | undefined } | null | undefined } | null | undefined };
 
 export type HomeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1249,6 +1260,55 @@ export function useHeaderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hea
 export type HeaderQueryHookResult = ReturnType<typeof useHeaderQuery>;
 export type HeaderLazyQueryHookResult = ReturnType<typeof useHeaderLazyQuery>;
 export type HeaderQueryResult = Apollo.QueryResult<HeaderQuery, HeaderQueryVariables>;
+export const AddDishDocument = gql`
+    mutation AddDish($name: String!, $description: String, $imageUrl: String, $priceInSek: Int!) {
+  createDish(
+    input: {dish: {name: $name, description: $description, imageUrl: $imageUrl, companyId: 1, priceInSek: $priceInSek}}
+  ) {
+    company {
+      id
+      dishes {
+        nodes {
+          id
+          name
+          imageUrl
+          description
+          priceInSek
+        }
+      }
+    }
+  }
+}
+    `;
+export type AddDishMutationFn = Apollo.MutationFunction<AddDishMutation, AddDishMutationVariables>;
+
+/**
+ * __useAddDishMutation__
+ *
+ * To run a mutation, you first call `useAddDishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddDishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addDishMutation, { data, loading, error }] = useAddDishMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      imageUrl: // value for 'imageUrl'
+ *      priceInSek: // value for 'priceInSek'
+ *   },
+ * });
+ */
+export function useAddDishMutation(baseOptions?: Apollo.MutationHookOptions<AddDishMutation, AddDishMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddDishMutation, AddDishMutationVariables>(AddDishDocument, options);
+      }
+export type AddDishMutationHookResult = ReturnType<typeof useAddDishMutation>;
+export type AddDishMutationResult = Apollo.MutationResult<AddDishMutation>;
+export type AddDishMutationOptions = Apollo.BaseMutationOptions<AddDishMutation, AddDishMutationVariables>;
 export const DishDocument = gql`
     query Dish($id: Int!) {
   dish(id: $id) {
@@ -1256,6 +1316,7 @@ export const DishDocument = gql`
     name
     description
     imageUrl
+    priceInSek
   }
 }
     `;
@@ -1288,9 +1349,9 @@ export type DishQueryHookResult = ReturnType<typeof useDishQuery>;
 export type DishLazyQueryHookResult = ReturnType<typeof useDishLazyQuery>;
 export type DishQueryResult = Apollo.QueryResult<DishQuery, DishQueryVariables>;
 export const EditDishDocument = gql`
-    mutation EditDish($id: Int!, $name: String!, $description: String, $imageUrl: String) {
+    mutation EditDish($id: Int!, $name: String!, $description: String, $imageUrl: String, $priceInSek: Int!) {
   updateDish(
-    input: {id: $id, patch: {name: $name, description: $description, imageUrl: $imageUrl}}
+    input: {id: $id, patch: {name: $name, description: $description, imageUrl: $imageUrl, priceInSek: $priceInSek}}
   ) {
     query {
       dish(id: $id) {
@@ -1298,6 +1359,7 @@ export const EditDishDocument = gql`
         name
         description
         imageUrl
+        priceInSek
       }
     }
   }
@@ -1322,6 +1384,7 @@ export type EditDishMutationFn = Apollo.MutationFunction<EditDishMutation, EditD
  *      name: // value for 'name'
  *      description: // value for 'description'
  *      imageUrl: // value for 'imageUrl'
+ *      priceInSek: // value for 'priceInSek'
  *   },
  * });
  */
