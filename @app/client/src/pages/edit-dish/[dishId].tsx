@@ -146,7 +146,7 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
   return (
     <Page>
       <Section>
-        <Link href='/'>
+        <Link href='/' passHref>
           <BackAnchor>Back to menu</BackAnchor>
         </Link>
         <Heading>Edit dish</Heading>

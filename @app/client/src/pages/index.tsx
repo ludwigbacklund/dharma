@@ -141,7 +141,7 @@ const Home = () => {
                   </div>
                   <DishBottomWrapper>
                     <DishPrice>{dish.priceInSek.toLocaleString()} kr</DishPrice>
-                    <Link href={`/edit-dish/${dish.id}`}>
+                    <Link href={`/edit-dish/${dish.id}`} passHref>
                       <EditDishAnchor>Edit dish</EditDishAnchor>
                     </Link>
                   </DishBottomWrapper>
@@ -149,7 +149,7 @@ const Home = () => {
               </Box>
             );
           })}
-          <Link href='/add-dish'>
+          <Link href='/add-dish' passHref>
             <AddDishBox>
               <AddDishText>Add Dish</AddDishText>
             </AddDishBox>

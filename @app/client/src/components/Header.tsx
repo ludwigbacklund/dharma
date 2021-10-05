@@ -42,7 +42,7 @@ export const Header = () => {
   return (
     <Wrapper>
       <InnerWrapper>
-        <Link href='/'>
+        <Link href='/' passHref>
           <TitleAnchor>Dharma</TitleAnchor>
         </Link>
         {user && (
