@@ -15,33 +15,36 @@ import {
   UserLatestOrders,
 } from '../components/OrdersPreview';
 import { useCurrentUserContext } from '../utils/use-current-user';
+import { PlusIcon } from '../components/icons/Plus';
 
 const Content = styled.div`
   display: flex;
+
+  ${media.tabletDown} {
+    flex-direction: column;
+  }
 `;
 
 const Dishes = styled.div`
   display: grid;
   grid-gap: 16px;
-  flex: 1;
-  max-height: 250px;
+  padding: 2px;
 
-  ${media.tabletUp} {
+  ${media.desktopUp} {
     grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(auto, max-content);
     grid-gap: 24px;
   }
 `;
 
-const DesktopOnly = styled.div`
-  ${media.desktopDown} {
-    display: none;
-  }
-`;
-
 const Sidebar = styled.div`
-  width: 260px;
-  margin-left: 32px;
+  min-width: 260px;
+  margin: 0 0 0 32px;
   padding: 0 16px;
+
+  ${media.tabletDown} {
+    margin: 32px 0 0 0;
+  }
 `;
 
 const Box = styled.div`
@@ -108,7 +111,7 @@ const AddDishBox = styled(Box).attrs({ as: 'a' })`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  min-height: 125px;
+  height: 60px;
 
   :hover {
     opacity: 0.5;
@@ -116,7 +119,13 @@ const AddDishBox = styled(Box).attrs({ as: 'a' })`
 `;
 
 const AddDishText = styled.span`
-  font-size: 32px;
+  font-size: 20px;
+`;
+
+const AddDishPlus = styled(PlusIcon)`
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
 `;
 
 const Home = () => {
@@ -199,15 +208,17 @@ const Home = () => {
             })}
             <Link href='/add-dish' passHref>
               <AddDishBox>
-                <AddDishText>Add Dish</AddDishText>
+                <AddDishText>
+                  <AddDishPlus />
+                  Add Dish
+                </AddDishText>
               </AddDishBox>
             </Link>
           </Dishes>
-          <DesktopOnly>
-            <Sidebar>
-              {testModeEnabled ? <UserLatestOrders /> : <CompanyLatestOrders />}
-            </Sidebar>
-          </DesktopOnly>
+
+          <Sidebar>
+            {testModeEnabled ? <UserLatestOrders /> : <CompanyLatestOrders />}
+          </Sidebar>
         </Content>
       </Section>
     </Page>

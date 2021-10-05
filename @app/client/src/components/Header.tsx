@@ -44,6 +44,12 @@ const StyledSelect = styled(Select)`
   margin-right: 8px;
 `;
 
+const DesktopOnly = styled.span`
+  ${media.desktopDown} {
+    display: none;
+  }
+`;
+
 interface UserOption {
   value: number;
   label: string;
@@ -82,7 +88,7 @@ export const Header = () => {
                 }}
               />
             )}{' '}
-            {user?.company?.name}
+            <DesktopOnly>{user?.company?.name}</DesktopOnly>
           </span>
         )}
       </InnerWrapper>
