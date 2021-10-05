@@ -70,6 +70,30 @@ type Company implements Node {
   """
   nodeId: ID!
 
+  """Reads and enables pagination through a set of `Order`."""
+  orders(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Order`."""
+    orderBy: [OrdersOrderBy!]
+  ): OrdersConnection!
+
   """Reads and enables pagination through a set of `User`."""
   users(
     """Read all values in the set after (below) this cursor."""
@@ -403,6 +427,7 @@ input DeleteOrderInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
+  createdAt: Datetime!
   dishId: Int!
   userId: Int!
 }
@@ -795,6 +820,9 @@ type Order implements Node {
 A condition to be used against `Order` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input OrderCondition {
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
   """Checks for equality with the object’s `dishId` field."""
   dishId: Int
 
@@ -846,6 +874,8 @@ type OrdersEdge {
 
 """Methods to use when ordering `Order`."""
 enum OrdersOrderBy {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
   DISH_ID_ASC
   DISH_ID_DESC
   NATURAL
@@ -954,7 +984,7 @@ type Query implements Node {
   The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
   """
   nodeId: ID!
-  order(dishId: Int!, userId: Int!): Order
+  order(createdAt: Datetime!, dishId: Int!, userId: Int!): Order
 
   """Reads a single `Order` using its globally unique `ID`."""
   orderByNodeId(
@@ -1177,6 +1207,7 @@ input UpdateOrderInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
+  createdAt: Datetime!
   dishId: Int!
 
   """

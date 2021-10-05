@@ -70,7 +70,7 @@ const ButtonInput = styled.input`
   border-radius: 4px;
   padding: 4px;
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 16px;
 
   :hover {
     opacity: 0.5;
@@ -132,7 +132,14 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
   });
 
   const onDelete = async (id: number) => {
-    deleteDish({ variables: { id } });
+    deleteDish({
+      variables: { id },
+      update(cache) {
+        const normalizedId = cache.identify({ id, __typename: 'Dish' });
+        cache.evict({ id: normalizedId });
+        cache.gc();
+      },
+    });
     await router.push('/');
   };
 
@@ -291,14 +298,7 @@ const EDIT_DISH_MUTATION = gql`
 const DELETE_DISH_MUTATION = gql`
   mutation DeleteDish($id: Int!) {
     deleteDish(input: { id: $id }) {
-      company {
-        id
-        dishes {
-          nodes {
-            id
-          }
-        }
-      }
+      clientMutationId
     }
   }
 `;

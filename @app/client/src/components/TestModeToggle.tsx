@@ -54,7 +54,7 @@ export const TestModeToggle = () => {
 
   return (
     <Wrapper>
-      <Text>Toggle testing mode</Text>
+      <Text>Toggle customer mode</Text>
       <Toggle
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setTestModeEnabled(e.target.checked)

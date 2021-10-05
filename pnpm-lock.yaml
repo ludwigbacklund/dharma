@@ -22,6 +22,7 @@ importers:
       '@types/react': 17.0.26
       '@types/styled-components': ^5.1.14
       babel-plugin-styled-components: ^1.13.2
+      date-fns: ^2.25.0
       graphql: ^15.6.0
       graphql-tag: ^2.12.5
       next: 11.1.2
@@ -35,6 +36,7 @@ importers:
     dependencies:
       '@apollo/client': 3.4.15_graphql@15.6.0+react@17.0.2
       babel-plugin-styled-components: 1.13.2_styled-components@5.3.1
+      date-fns: 2.25.0
       graphql: 15.6.0
       graphql-tag: 2.12.5_graphql@15.6.0
       next: 11.1.2_bd7797d63db473de6e2318609a63c933
@@ -2412,6 +2414,11 @@ packages:
 
   /date-fns/2.24.0:
     resolution: {integrity: sha512-6ujwvwgPID6zbI0o7UbURi2vlLDR9uP26+tW6Lg+Ji3w7dd0i3DOcjcClLjLPranT60SSEFBwdSyYwn/ZkPIuw==}
+    engines: {node: '>=0.11'}
+    dev: false
+
+  /date-fns/2.25.0:
+    resolution: {integrity: sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==}
     engines: {node: '>=0.11'}
     dev: false
 

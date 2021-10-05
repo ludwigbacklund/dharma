@@ -5,19 +5,42 @@ import Link from 'next/link';
 
 import { Page } from '../components/Page';
 import { Section } from '../components/Section';
-import { useHomeQuery } from '../generated/graphql';
+import { useHomeQuery, useOrderDishMutation } from '../generated/graphql';
 import { media } from '../utils/styling';
 import { withGraphql } from '../utils/with-apollo';
 import { Heading } from '../components/Heading';
+import { useTestModeContext } from '../components/TestModeToggle';
+import {
+  CompanyLatestOrders,
+  UserLatestOrders,
+} from '../components/OrdersPreview';
+
+const Content = styled.div`
+  display: flex;
+`;
 
 const Dishes = styled.div`
   display: grid;
   grid-gap: 16px;
+  flex: 1;
+  max-height: 250px;
 
   ${media.tabletUp} {
     grid-template-columns: 1fr 1fr;
     grid-gap: 24px;
   }
+`;
+
+const DesktopOnly = styled.div`
+  ${media.desktopDown} {
+    display: none;
+  }
+`;
+
+const Sidebar = styled.div`
+  width: 260px;
+  margin-left: 32px;
+  padding: 0 16px;
 `;
 
 const Box = styled.div`
@@ -68,7 +91,7 @@ const DishBottomWrapper = styled.div`
   align-items: center;
 `;
 
-const EditDishAnchor = styled.a`
+const DishAnchor = styled.a`
   border: 1px solid #3a3a3a;
   background: white;
   border-radius: 4px;
@@ -97,6 +120,8 @@ const AddDishText = styled.span`
 
 const Home = () => {
   const { data, loading, error } = useHomeQuery();
+  const [orderDish] = useOrderDishMutation();
+  const { testModeEnabled } = useTestModeContext();
 
   if (loading) {
     return null;
@@ -115,46 +140,66 @@ const Home = () => {
           {user.company.name}
           {user.company.name.endsWith('s') ? "'" : "'s"} menu
         </Heading>
-        <Dishes>
-          {user.company.dishes.nodes.map((dish, i) => {
-            if (!dish) return;
+        <Content>
+          <Dishes>
+            {user.company.dishes.nodes.map((dish, i) => {
+              if (!dish) return;
 
-            return (
-              <Box key={dish.id}>
-                {dish.imageUrl && (
-                  <ImageWrapper>
-                    <DishImage
-                      src={dish.imageUrl}
-                      layout='fill'
-                      objectFit='cover'
-                      // Pre-load the first ten images, lazy-load the rest.
-                      priority={i < 10 ? true : false}
-                    />
-                  </ImageWrapper>
-                )}
-                <DishInfo>
-                  <div>
-                    <DishName>{dish.name}</DishName>
-                    {dish.description && (
-                      <DishDescription>{dish.description}</DishDescription>
-                    )}
-                  </div>
-                  <DishBottomWrapper>
-                    <DishPrice>{dish.priceInSek.toLocaleString()} kr</DishPrice>
-                    <Link href={`/edit-dish/${dish.id}`} passHref>
-                      <EditDishAnchor>Edit dish</EditDishAnchor>
-                    </Link>
-                  </DishBottomWrapper>
-                </DishInfo>
-              </Box>
-            );
-          })}
-          <Link href='/add-dish' passHref>
-            <AddDishBox>
-              <AddDishText>Add Dish</AddDishText>
-            </AddDishBox>
-          </Link>
-        </Dishes>
+              return (
+                <Box key={dish.id}>
+                  {dish.imageUrl && (
+                    <ImageWrapper>
+                      <DishImage
+                        src={dish.imageUrl}
+                        layout='fill'
+                        objectFit='cover'
+                        // Pre-load the first ten images, lazy-load the rest.
+                        priority={i < 10 ? true : false}
+                      />
+                    </ImageWrapper>
+                  )}
+                  <DishInfo>
+                    <div>
+                      <DishName>{dish.name}</DishName>
+                      {dish.description && (
+                        <DishDescription>{dish.description}</DishDescription>
+                      )}
+                    </div>
+                    <DishBottomWrapper>
+                      <DishPrice>
+                        {dish.priceInSek.toLocaleString()} kr
+                      </DishPrice>
+                      {testModeEnabled ? (
+                        <DishAnchor
+                          as='button'
+                          onClick={() =>
+                            orderDish({ variables: { dishId: dish.id } })
+                          }
+                        >
+                          Order
+                        </DishAnchor>
+                      ) : (
+                        <Link href={`/edit-dish/${dish.id}`} passHref>
+                          <DishAnchor>Edit dish</DishAnchor>
+                        </Link>
+                      )}
+                    </DishBottomWrapper>
+                  </DishInfo>
+                </Box>
+              );
+            })}
+            <Link href='/add-dish' passHref>
+              <AddDishBox>
+                <AddDishText>Add Dish</AddDishText>
+              </AddDishBox>
+            </Link>
+          </Dishes>
+          <DesktopOnly>
+            <Sidebar>
+              {testModeEnabled ? <UserLatestOrders /> : <CompanyLatestOrders />}
+            </Sidebar>
+          </DesktopOnly>
+        </Content>
       </Section>
     </Page>
   );
@@ -175,6 +220,31 @@ const HOME_QUERY = gql`
             imageUrl
             description
             priceInSek
+          }
+        }
+      }
+    }
+  }
+`;
+
+const ORDER_DISH_MUTATION = gql`
+  mutation OrderDish($dishId: Int!) {
+    createOrder(input: { order: { userId: 1, dishId: $dishId } }) {
+      user {
+        id
+        orders(orderBy: CREATED_AT_DESC, first: 10) {
+          nodes {
+            dishId
+            userId
+          }
+        }
+        company {
+          id
+          orders(orderBy: CREATED_AT_DESC, first: 10) {
+            nodes {
+              dishId
+              userId
+            }
           }
         }
       }

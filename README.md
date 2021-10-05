@@ -12,3 +12,6 @@ The following functionality has been intentionally left out due to time constrai
 - Linting
 - Empty states
 - Cleaning up unused fields in GraphQL API (they remain to show off what this setup can do)
+- Subscriptions
+- Robust error handling
+- Robust input validation

@@ -60,6 +60,8 @@ export type Company = Node & {
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `Order`. */
+  orders: OrdersConnection;
   /** Reads and enables pagination through a set of `User`. */
   users: UsersConnection;
 };
@@ -73,6 +75,16 @@ export type CompanyDishesArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<DishesOrderBy>>;
+};
+
+
+export type CompanyOrdersArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<OrdersOrderBy>>;
 };
 
 
@@ -352,6 +364,7 @@ export type DeleteOrderInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  createdAt: Scalars['Datetime'];
   dishId: Scalars['Int'];
   userId: Scalars['Int'];
 };
@@ -703,6 +716,8 @@ export type Order = Node & {
 
 /** A condition to be used against `Order` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type OrderCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: Maybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `dishId` field. */
   dishId?: Maybe<Scalars['Int']>;
   /** Checks for equality with the object’s `userId` field. */
@@ -747,6 +762,8 @@ export type OrdersEdge = {
 
 /** Methods to use when ordering `Order`. */
 export enum OrdersOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
   DishIdAsc = 'DISH_ID_ASC',
   DishIdDesc = 'DISH_ID_DESC',
   Natural = 'NATURAL',
@@ -860,6 +877,7 @@ export type QueryNodeArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryOrderArgs = {
+  createdAt: Scalars['Datetime'];
   dishId: Scalars['Int'];
   userId: Scalars['Int'];
 };
@@ -1022,6 +1040,7 @@ export type UpdateOrderInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  createdAt: Scalars['Datetime'];
   dishId: Scalars['Int'];
   /** An object where the defined keys will be set on the `Order` being updated. */
   patch: OrderPatch;
@@ -1187,6 +1206,18 @@ export type HeaderQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HeaderQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string } | null | undefined } | null | undefined };
 
+export type OrderPreviewFragment = { __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined };
+
+export type UserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserOrdersQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined } | null | undefined> } } | null | undefined };
+
+export type CompanyOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompanyOrdersQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, company?: { __typename?: 'Company', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined } | null | undefined> } } | null | undefined } | null | undefined };
+
 export type AddDishMutationVariables = Exact<{
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -1220,14 +1251,36 @@ export type DeleteDishMutationVariables = Exact<{
 }>;
 
 
-export type DeleteDishMutation = { __typename?: 'Mutation', deleteDish?: { __typename?: 'DeleteDishPayload', company?: { __typename?: 'Company', id: number, dishes: { __typename?: 'DishesConnection', nodes: Array<{ __typename?: 'Dish', id: number } | null | undefined> } } | null | undefined } | null | undefined };
+export type DeleteDishMutation = { __typename?: 'Mutation', deleteDish?: { __typename?: 'DeleteDishPayload', clientMutationId?: string | null | undefined } | null | undefined };
 
 export type HomeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HomeQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string, dishes: { __typename?: 'DishesConnection', nodes: Array<{ __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined, description?: string | null | undefined, priceInSek: number } | null | undefined> } } | null | undefined } | null | undefined };
 
+export type OrderDishMutationVariables = Exact<{
+  dishId: Scalars['Int'];
+}>;
 
+
+export type OrderDishMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'CreateOrderPayload', user?: { __typename?: 'User', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number } | null | undefined> }, company?: { __typename?: 'Company', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number } | null | undefined> } } | null | undefined } | null | undefined } | null | undefined };
+
+export const OrderPreviewFragmentDoc = gql`
+    fragment OrderPreview on Order {
+  dishId
+  userId
+  createdAt
+  dish {
+    id
+    name
+    imageUrl
+  }
+  user {
+    id
+    name
+  }
+}
+    `;
 export const HeaderDocument = gql`
     query Header {
   user(id: 1) {
@@ -1267,6 +1320,87 @@ export function useHeaderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hea
 export type HeaderQueryHookResult = ReturnType<typeof useHeaderQuery>;
 export type HeaderLazyQueryHookResult = ReturnType<typeof useHeaderLazyQuery>;
 export type HeaderQueryResult = Apollo.QueryResult<HeaderQuery, HeaderQueryVariables>;
+export const UserOrdersDocument = gql`
+    query UserOrders {
+  user(id: 1) {
+    id
+    orders(orderBy: CREATED_AT_DESC, first: 10) {
+      nodes {
+        ...OrderPreview
+      }
+    }
+  }
+}
+    ${OrderPreviewFragmentDoc}`;
+
+/**
+ * __useUserOrdersQuery__
+ *
+ * To run a query within a React component, call `useUserOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserOrdersQuery(baseOptions?: Apollo.QueryHookOptions<UserOrdersQuery, UserOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserOrdersQuery, UserOrdersQueryVariables>(UserOrdersDocument, options);
+      }
+export function useUserOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserOrdersQuery, UserOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserOrdersQuery, UserOrdersQueryVariables>(UserOrdersDocument, options);
+        }
+export type UserOrdersQueryHookResult = ReturnType<typeof useUserOrdersQuery>;
+export type UserOrdersLazyQueryHookResult = ReturnType<typeof useUserOrdersLazyQuery>;
+export type UserOrdersQueryResult = Apollo.QueryResult<UserOrdersQuery, UserOrdersQueryVariables>;
+export const CompanyOrdersDocument = gql`
+    query CompanyOrders {
+  user(id: 1) {
+    id
+    company {
+      id
+      orders(orderBy: CREATED_AT_DESC, first: 10) {
+        nodes {
+          ...OrderPreview
+        }
+      }
+    }
+  }
+}
+    ${OrderPreviewFragmentDoc}`;
+
+/**
+ * __useCompanyOrdersQuery__
+ *
+ * To run a query within a React component, call `useCompanyOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompanyOrdersQuery(baseOptions?: Apollo.QueryHookOptions<CompanyOrdersQuery, CompanyOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CompanyOrdersQuery, CompanyOrdersQueryVariables>(CompanyOrdersDocument, options);
+      }
+export function useCompanyOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanyOrdersQuery, CompanyOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CompanyOrdersQuery, CompanyOrdersQueryVariables>(CompanyOrdersDocument, options);
+        }
+export type CompanyOrdersQueryHookResult = ReturnType<typeof useCompanyOrdersQuery>;
+export type CompanyOrdersLazyQueryHookResult = ReturnType<typeof useCompanyOrdersLazyQuery>;
+export type CompanyOrdersQueryResult = Apollo.QueryResult<CompanyOrdersQuery, CompanyOrdersQueryVariables>;
 export const AddDishDocument = gql`
     mutation AddDish($name: String!, $description: String, $imageUrl: String, $priceInSek: Int!) {
   createDish(
@@ -1405,14 +1539,7 @@ export type EditDishMutationOptions = Apollo.BaseMutationOptions<EditDishMutatio
 export const DeleteDishDocument = gql`
     mutation DeleteDish($id: Int!) {
   deleteDish(input: {id: $id}) {
-    company {
-      id
-      dishes {
-        nodes {
-          id
-        }
-      }
-    }
+    clientMutationId
   }
 }
     `;
@@ -1490,3 +1617,53 @@ export function useHomeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeQ
 export type HomeQueryHookResult = ReturnType<typeof useHomeQuery>;
 export type HomeLazyQueryHookResult = ReturnType<typeof useHomeLazyQuery>;
 export type HomeQueryResult = Apollo.QueryResult<HomeQuery, HomeQueryVariables>;
+export const OrderDishDocument = gql`
+    mutation OrderDish($dishId: Int!) {
+  createOrder(input: {order: {userId: 1, dishId: $dishId}}) {
+    user {
+      id
+      orders(orderBy: CREATED_AT_DESC, first: 10) {
+        nodes {
+          dishId
+          userId
+        }
+      }
+      company {
+        id
+        orders(orderBy: CREATED_AT_DESC, first: 10) {
+          nodes {
+            dishId
+            userId
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type OrderDishMutationFn = Apollo.MutationFunction<OrderDishMutation, OrderDishMutationVariables>;
+
+/**
+ * __useOrderDishMutation__
+ *
+ * To run a mutation, you first call `useOrderDishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOrderDishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [orderDishMutation, { data, loading, error }] = useOrderDishMutation({
+ *   variables: {
+ *      dishId: // value for 'dishId'
+ *   },
+ * });
+ */
+export function useOrderDishMutation(baseOptions?: Apollo.MutationHookOptions<OrderDishMutation, OrderDishMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<OrderDishMutation, OrderDishMutationVariables>(OrderDishDocument, options);
+      }
+export type OrderDishMutationHookResult = ReturnType<typeof useOrderDishMutation>;
+export type OrderDishMutationResult = Apollo.MutationResult<OrderDishMutation>;
+export type OrderDishMutationOptions = Apollo.BaseMutationOptions<OrderDishMutation, OrderDishMutationVariables>;
