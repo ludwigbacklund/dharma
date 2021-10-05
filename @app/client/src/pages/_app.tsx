@@ -1,9 +1,9 @@
 import type { AppProps } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
 import {
-  TestModeContextProvider,
-  TestModeToggle,
-} from '../components/TestModeToggle';
+  AdminModeContextProvider,
+  AdminModeToggle,
+} from '../components/AdminModeToggle';
 import { CurrentUserContextProvider } from '../utils/use-current-user';
 
 const GlobalStyle = createGlobalStyle`
@@ -37,10 +37,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <GlobalStyle />
       <CurrentUserContextProvider>
-        <TestModeContextProvider>
+        <AdminModeContextProvider>
           <Component {...pageProps} />
-          <TestModeToggle />
-        </TestModeContextProvider>
+          <AdminModeToggle />
+        </AdminModeContextProvider>
       </CurrentUserContextProvider>
     </>
   );

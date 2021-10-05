@@ -9,7 +9,7 @@ import { useHomeQuery, useOrderDishMutation } from '../generated/graphql';
 import { media } from '../utils/styling';
 import { withGraphql } from '../utils/with-apollo';
 import { Heading } from '../components/Heading';
-import { useTestModeContext } from '../components/TestModeToggle';
+import { useAdminModeContext } from '../components/AdminModeToggle';
 import {
   CompanyLatestOrders,
   UserLatestOrders,
@@ -134,7 +134,7 @@ const Home = () => {
     variables: { userId: currentUserId },
   });
   const [orderDish] = useOrderDishMutation();
-  const { testModeEnabled } = useTestModeContext();
+  const { adminModeEnabled } = useAdminModeContext();
 
   if (loading) {
     return <Page />;
@@ -182,7 +182,11 @@ const Home = () => {
                       <DishPrice>
                         {dish.priceInSek.toLocaleString()} kr
                       </DishPrice>
-                      {testModeEnabled ? (
+                      {adminModeEnabled ? (
+                        <Link href={`/edit-dish/${dish.id}`} passHref>
+                          <DishAnchor>Edit dish</DishAnchor>
+                        </Link>
+                      ) : (
                         <DishAnchor
                           as='button'
                           onClick={() =>
@@ -196,17 +200,13 @@ const Home = () => {
                         >
                           Order
                         </DishAnchor>
-                      ) : (
-                        <Link href={`/edit-dish/${dish.id}`} passHref>
-                          <DishAnchor>Edit dish</DishAnchor>
-                        </Link>
                       )}
                     </DishBottomWrapper>
                   </DishInfo>
                 </Box>
               );
             })}
-            {!testModeEnabled && (
+            {adminModeEnabled && (
               <Link href='/add-dish' passHref>
                 <AddDishBox>
                   <AddDishText>
@@ -219,7 +219,7 @@ const Home = () => {
           </Dishes>
 
           <Sidebar>
-            {testModeEnabled ? <UserLatestOrders /> : <CompanyLatestOrders />}
+            {adminModeEnabled ? <CompanyLatestOrders /> : <UserLatestOrders />}
           </Sidebar>
         </Content>
       </Section>
