@@ -1201,19 +1201,25 @@ export enum UsersOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
-export type HeaderQueryVariables = Exact<{ [key: string]: never; }>;
+export type HeaderQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
 
 
-export type HeaderQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string } | null | undefined } | null | undefined };
+export type HeaderQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string } | null | undefined } | null | undefined, users?: { __typename?: 'UsersConnection', nodes: Array<{ __typename?: 'User', id: number, name: string } | null | undefined> } | null | undefined };
 
 export type OrderPreviewFragment = { __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined };
 
-export type UserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+export type UserOrdersQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
 
 
 export type UserOrdersQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined } | null | undefined> } } | null | undefined };
 
-export type CompanyOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+export type CompanyOrdersQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
 
 
 export type CompanyOrdersQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, company?: { __typename?: 'Company', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined } | null | undefined> } } | null | undefined } | null | undefined };
@@ -1253,12 +1259,15 @@ export type DeleteDishMutationVariables = Exact<{
 
 export type DeleteDishMutation = { __typename?: 'Mutation', deleteDish?: { __typename?: 'DeleteDishPayload', clientMutationId?: string | null | undefined } | null | undefined };
 
-export type HomeQueryVariables = Exact<{ [key: string]: never; }>;
+export type HomeQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
 
 
 export type HomeQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name: string, company?: { __typename?: 'Company', id: number, name: string, dishes: { __typename?: 'DishesConnection', nodes: Array<{ __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined, description?: string | null | undefined, priceInSek: number } | null | undefined> } } | null | undefined } | null | undefined };
 
 export type OrderDishMutationVariables = Exact<{
+  userId: Scalars['Int'];
   dishId: Scalars['Int'];
 }>;
 
@@ -1282,11 +1291,17 @@ export const OrderPreviewFragmentDoc = gql`
 }
     `;
 export const HeaderDocument = gql`
-    query Header {
-  user(id: 1) {
+    query Header($id: Int!) {
+  user(id: $id) {
     id
     name
     company {
+      id
+      name
+    }
+  }
+  users {
+    nodes {
       id
       name
     }
@@ -1306,10 +1321,11 @@ export const HeaderDocument = gql`
  * @example
  * const { data, loading, error } = useHeaderQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useHeaderQuery(baseOptions?: Apollo.QueryHookOptions<HeaderQuery, HeaderQueryVariables>) {
+export function useHeaderQuery(baseOptions: Apollo.QueryHookOptions<HeaderQuery, HeaderQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<HeaderQuery, HeaderQueryVariables>(HeaderDocument, options);
       }
@@ -1321,8 +1337,8 @@ export type HeaderQueryHookResult = ReturnType<typeof useHeaderQuery>;
 export type HeaderLazyQueryHookResult = ReturnType<typeof useHeaderLazyQuery>;
 export type HeaderQueryResult = Apollo.QueryResult<HeaderQuery, HeaderQueryVariables>;
 export const UserOrdersDocument = gql`
-    query UserOrders {
-  user(id: 1) {
+    query UserOrders($userId: Int!) {
+  user(id: $userId) {
     id
     orders(orderBy: CREATED_AT_DESC, first: 10) {
       nodes {
@@ -1345,10 +1361,11 @@ export const UserOrdersDocument = gql`
  * @example
  * const { data, loading, error } = useUserOrdersQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useUserOrdersQuery(baseOptions?: Apollo.QueryHookOptions<UserOrdersQuery, UserOrdersQueryVariables>) {
+export function useUserOrdersQuery(baseOptions: Apollo.QueryHookOptions<UserOrdersQuery, UserOrdersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<UserOrdersQuery, UserOrdersQueryVariables>(UserOrdersDocument, options);
       }
@@ -1360,8 +1377,8 @@ export type UserOrdersQueryHookResult = ReturnType<typeof useUserOrdersQuery>;
 export type UserOrdersLazyQueryHookResult = ReturnType<typeof useUserOrdersLazyQuery>;
 export type UserOrdersQueryResult = Apollo.QueryResult<UserOrdersQuery, UserOrdersQueryVariables>;
 export const CompanyOrdersDocument = gql`
-    query CompanyOrders {
-  user(id: 1) {
+    query CompanyOrders($userId: Int!) {
+  user(id: $userId) {
     id
     company {
       id
@@ -1387,10 +1404,11 @@ export const CompanyOrdersDocument = gql`
  * @example
  * const { data, loading, error } = useCompanyOrdersQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useCompanyOrdersQuery(baseOptions?: Apollo.QueryHookOptions<CompanyOrdersQuery, CompanyOrdersQueryVariables>) {
+export function useCompanyOrdersQuery(baseOptions: Apollo.QueryHookOptions<CompanyOrdersQuery, CompanyOrdersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<CompanyOrdersQuery, CompanyOrdersQueryVariables>(CompanyOrdersDocument, options);
       }
@@ -1570,8 +1588,8 @@ export type DeleteDishMutationHookResult = ReturnType<typeof useDeleteDishMutati
 export type DeleteDishMutationResult = Apollo.MutationResult<DeleteDishMutation>;
 export type DeleteDishMutationOptions = Apollo.BaseMutationOptions<DeleteDishMutation, DeleteDishMutationVariables>;
 export const HomeDocument = gql`
-    query Home {
-  user(id: 1) {
+    query Home($userId: Int!) {
+  user(id: $userId) {
     id
     name
     company {
@@ -1603,10 +1621,11 @@ export const HomeDocument = gql`
  * @example
  * const { data, loading, error } = useHomeQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useHomeQuery(baseOptions?: Apollo.QueryHookOptions<HomeQuery, HomeQueryVariables>) {
+export function useHomeQuery(baseOptions: Apollo.QueryHookOptions<HomeQuery, HomeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<HomeQuery, HomeQueryVariables>(HomeDocument, options);
       }
@@ -1618,8 +1637,8 @@ export type HomeQueryHookResult = ReturnType<typeof useHomeQuery>;
 export type HomeLazyQueryHookResult = ReturnType<typeof useHomeLazyQuery>;
 export type HomeQueryResult = Apollo.QueryResult<HomeQuery, HomeQueryVariables>;
 export const OrderDishDocument = gql`
-    mutation OrderDish($dishId: Int!) {
-  createOrder(input: {order: {userId: 1, dishId: $dishId}}) {
+    mutation OrderDish($userId: Int!, $dishId: Int!) {
+  createOrder(input: {order: {userId: $userId, dishId: $dishId}}) {
     user {
       id
       orders(orderBy: CREATED_AT_DESC, first: 10) {
@@ -1656,6 +1675,7 @@ export type OrderDishMutationFn = Apollo.MutationFunction<OrderDishMutation, Ord
  * @example
  * const [orderDishMutation, { data, loading, error }] = useOrderDishMutation({
  *   variables: {
+ *      userId: // value for 'userId'
  *      dishId: // value for 'dishId'
  *   },
  * });

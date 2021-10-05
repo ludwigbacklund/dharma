@@ -14,6 +14,7 @@ import {
   CompanyLatestOrders,
   UserLatestOrders,
 } from '../components/OrdersPreview';
+import { useCurrentUserContext } from '../utils/use-current-user';
 
 const Content = styled.div`
   display: flex;
@@ -119,7 +120,10 @@ const AddDishText = styled.span`
 `;
 
 const Home = () => {
-  const { data, loading, error } = useHomeQuery();
+  const { currentUserId } = useCurrentUserContext();
+  const { data, loading, error } = useHomeQuery({
+    variables: { userId: currentUserId },
+  });
   const [orderDish] = useOrderDishMutation();
   const { testModeEnabled } = useTestModeContext();
 
@@ -173,7 +177,12 @@ const Home = () => {
                         <DishAnchor
                           as='button'
                           onClick={() =>
-                            orderDish({ variables: { dishId: dish.id } })
+                            orderDish({
+                              variables: {
+                                userId: currentUserId,
+                                dishId: dish.id,
+                              },
+                            })
                           }
                         >
                           Order
@@ -206,8 +215,8 @@ const Home = () => {
 };
 
 const HOME_QUERY = gql`
-  query Home {
-    user(id: 1) {
+  query Home($userId: Int!) {
+    user(id: $userId) {
       id
       name
       company {
@@ -228,8 +237,8 @@ const HOME_QUERY = gql`
 `;
 
 const ORDER_DISH_MUTATION = gql`
-  mutation OrderDish($dishId: Int!) {
-    createOrder(input: { order: { userId: 1, dishId: $dishId } }) {
+  mutation OrderDish($userId: Int!, $dishId: Int!) {
+    createOrder(input: { order: { userId: $userId, dishId: $dishId } }) {
       user {
         id
         orders(orderBy: CREATED_AT_DESC, first: 10) {

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, createContext, useContext } from 'react';
 import { useState } from 'react';
-import { createContext, useContext } from 'react';
 
 import { Toggle } from './Toggle';
 

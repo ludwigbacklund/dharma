@@ -12,11 +12,16 @@ const MainContent = styled.main`
   flex-grow: 1;
 `;
 
-export const Page: React.FC = ({ children }) => {
+interface Props {
+  showHeader?: boolean;
+  children: React.ReactNode;
+}
+
+export const Page = ({ showHeader = true, children }: Props) => {
   return (
     <PageWrapper>
       <MainContent>
-        <Header />
+        {showHeader && <Header />}
         {children}
       </MainContent>
     </PageWrapper>

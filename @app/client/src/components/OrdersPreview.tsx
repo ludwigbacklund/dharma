@@ -7,7 +7,8 @@ import {
   useUserOrdersQuery,
 } from '../generated/graphql';
 import { isDefined } from '../utils/is-defined';
-import { formatDistance, subDays } from 'date-fns';
+import { formatDistance } from 'date-fns';
+import { useCurrentUserContext } from '../utils/use-current-user';
 
 const Heading = styled.span`
   display: block;
@@ -69,6 +70,10 @@ interface Props {
 }
 
 const OrdersPreview = ({ orders, customName }: Props) => {
+  if (orders.length === 0) {
+    return <span>No orders placed yet</span>;
+  }
+
   return (
     <>
       {orders.map((order) => {
@@ -106,7 +111,8 @@ const OrdersPreview = ({ orders, customName }: Props) => {
 };
 
 export const UserLatestOrders = () => {
-  const { data } = useUserOrdersQuery();
+  const { currentUserId } = useCurrentUserContext();
+  const { data } = useUserOrdersQuery({ variables: { userId: currentUserId } });
   if (!data?.user) return null;
 
   return (
@@ -121,7 +127,10 @@ export const UserLatestOrders = () => {
 };
 
 export const CompanyLatestOrders = () => {
-  const { data } = useCompanyOrdersQuery();
+  const { currentUserId } = useCurrentUserContext();
+  const { data } = useCompanyOrdersQuery({
+    variables: { userId: currentUserId },
+  });
   if (!data?.user?.company) return null;
 
   return (
@@ -152,8 +161,8 @@ const ORDERS_PREVIEW_FRAGMENT = gql`
 `;
 
 const USER_ORDERS_QUERY = gql`
-  query UserOrders {
-    user(id: 1) {
+  query UserOrders($userId: Int!) {
+    user(id: $userId) {
       id
       orders(orderBy: CREATED_AT_DESC, first: 10) {
         nodes {
@@ -166,8 +175,8 @@ const USER_ORDERS_QUERY = gql`
 `;
 
 const COMPANY_ORDERS_QUERY = gql`
-  query CompanyOrders {
-    user(id: 1) {
+  query CompanyOrders($userId: Int!) {
+    user(id: $userId) {
       id
       company {
         id

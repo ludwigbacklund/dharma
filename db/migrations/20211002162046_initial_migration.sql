@@ -42,8 +42,7 @@ $$ language sql stable;
 comment on function app_public.companies_orders(company app_public.companies) is E'@sortable';
 
 insert into app_public.companies (name) values ('Lord of the Wings');
-insert into app_public.users (name, company_id) values ('Frodemo', 1);
-insert into app_public.users (name, company_id) values ('Gandemodalf', 1);
+insert into app_public.users (name, company_id) values ('Frodemo', 1), ('Gandemodalf', 1), ('Théodemoden', 1);
 insert into app_public.dishes (name, description, image_url, price_in_sek, company_id) values (
     'Chicken Wings',
     'The juiciest, crunchiest wings you''ll find this side of the Atlantic. Yum yum yum.',
