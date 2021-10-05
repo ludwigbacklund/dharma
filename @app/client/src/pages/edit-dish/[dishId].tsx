@@ -9,6 +9,7 @@ import { Page } from '../../components/Page';
 import { Section } from '../../components/Section';
 import {
   DishQuery,
+  useDeleteDishMutation,
   useDishQuery,
   useEditDishMutation,
 } from '../../generated/graphql';
@@ -17,6 +18,7 @@ import { useNextQueryParam } from '../../utils/use-next-query-param';
 import { withGraphql } from '../../utils/with-apollo';
 import { Input } from '../../components/Input';
 import { Heading } from '../../components/Heading';
+import { useRouter } from 'next/dist/client/router';
 
 const BackAnchor = styled.a`
   display: block;
@@ -62,7 +64,7 @@ const ImageNotice = styled.span`
   color: #707070;
 `;
 
-const SaveButtonInput = styled.input`
+const ButtonInput = styled.input`
   border: 1px solid #3a3a3a;
   background: white;
   border-radius: 4px;
@@ -73,6 +75,17 @@ const SaveButtonInput = styled.input`
   :hover {
     opacity: 0.5;
   }
+
+  :disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+`;
+
+const DeleteButtonInput = styled(ButtonInput)`
+  border: 1px solid #f44336;
+  color: #f44336;
+  margin-left: 8px;
 `;
 
 const SuccessText = styled.span`
@@ -105,7 +118,9 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
     },
   });
   const [editDish] = useEditDishMutation();
+  const [deleteDish] = useDeleteDishMutation();
   const [showSuccessText, setShowSuccessText] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!showSuccessText) return;
@@ -115,6 +130,11 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
       clearTimeout(timeout);
     };
   });
+
+  const onDelete = async (id: number) => {
+    deleteDish({ variables: { id } });
+    await router.push('/');
+  };
 
   const onSubmit = async ({
     name,
@@ -189,7 +209,12 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
               errorMessage={errors.imageUrl?.message}
             />
             <ImageNotice>Please use a images.pexels.com image URL.</ImageNotice>
-            {isDirty && <SaveButtonInput type='submit' value='Save' />}
+            <ButtonInput type='submit' value='Save' disabled={!isDirty} />
+            <DeleteButtonInput
+              type='button'
+              value='Delete'
+              onClick={() => onDelete(dish.id)}
+            />
             {showSuccessText && <SuccessText>Dish updated!</SuccessText>}
           </StyledForm>
         </Wrapper>
@@ -257,6 +282,21 @@ const EDIT_DISH_MUTATION = gql`
           description
           imageUrl
           priceInSek
+        }
+      }
+    }
+  }
+`;
+
+const DELETE_DISH_MUTATION = gql`
+  mutation DeleteDish($id: Int!) {
+    deleteDish(input: { id: $id }) {
+      company {
+        id
+        dishes {
+          nodes {
+            id
+          }
         }
       }
     }

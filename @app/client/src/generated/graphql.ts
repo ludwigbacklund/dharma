@@ -1215,6 +1215,13 @@ export type EditDishMutationVariables = Exact<{
 
 export type EditDishMutation = { __typename?: 'Mutation', updateDish?: { __typename?: 'UpdateDishPayload', query?: { __typename?: 'Query', dish?: { __typename?: 'Dish', id: number, name: string, description?: string | null | undefined, imageUrl?: string | null | undefined, priceInSek: number } | null | undefined } | null | undefined } | null | undefined };
 
+export type DeleteDishMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteDishMutation = { __typename?: 'Mutation', deleteDish?: { __typename?: 'DeleteDishPayload', company?: { __typename?: 'Company', id: number, dishes: { __typename?: 'DishesConnection', nodes: Array<{ __typename?: 'Dish', id: number } | null | undefined> } } | null | undefined } | null | undefined };
+
 export type HomeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1395,6 +1402,46 @@ export function useEditDishMutation(baseOptions?: Apollo.MutationHookOptions<Edi
 export type EditDishMutationHookResult = ReturnType<typeof useEditDishMutation>;
 export type EditDishMutationResult = Apollo.MutationResult<EditDishMutation>;
 export type EditDishMutationOptions = Apollo.BaseMutationOptions<EditDishMutation, EditDishMutationVariables>;
+export const DeleteDishDocument = gql`
+    mutation DeleteDish($id: Int!) {
+  deleteDish(input: {id: $id}) {
+    company {
+      id
+      dishes {
+        nodes {
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+export type DeleteDishMutationFn = Apollo.MutationFunction<DeleteDishMutation, DeleteDishMutationVariables>;
+
+/**
+ * __useDeleteDishMutation__
+ *
+ * To run a mutation, you first call `useDeleteDishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDishMutation, { data, loading, error }] = useDeleteDishMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteDishMutation(baseOptions?: Apollo.MutationHookOptions<DeleteDishMutation, DeleteDishMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteDishMutation, DeleteDishMutationVariables>(DeleteDishDocument, options);
+      }
+export type DeleteDishMutationHookResult = ReturnType<typeof useDeleteDishMutation>;
+export type DeleteDishMutationResult = Apollo.MutationResult<DeleteDishMutation>;
+export type DeleteDishMutationOptions = Apollo.BaseMutationOptions<DeleteDishMutation, DeleteDishMutationVariables>;
 export const HomeDocument = gql`
     query Home {
   user(id: 1) {
