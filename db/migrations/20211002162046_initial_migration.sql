@@ -9,7 +9,7 @@ create table app_public.companies (
 create table app_public.users (
   id serial primary key,
   name text not null,
-  company_id int not null references app_public.companies
+  company_id int not null references app_public.companies on delete cascade
 );
 create index on app_public.users(company_id);
 
@@ -19,13 +19,13 @@ create table app_public.dishes (
   description text,
   image_url text,
   price_in_sek int not null,
-  company_id int not null references app_public.companies
+  company_id int not null references app_public.companies on delete cascade
 );
 create index on app_public.dishes(company_id);
 
 create table app_public.orders (
-  user_id int not null references app_public.users,
-  dish_id int not null references app_public.dishes,
+  user_id int not null references app_public.users on delete cascade,
+  dish_id int not null references app_public.dishes on delete cascade,
   created_at timestamptz not null default now(),
   primary key (user_id, dish_id)
 );
