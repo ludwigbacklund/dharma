@@ -14,7 +14,7 @@ const MainContent = styled.main`
 
 interface Props {
   showHeader?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const Page = ({ showHeader = true, children }: Props) => {

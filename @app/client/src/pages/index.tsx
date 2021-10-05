@@ -137,7 +137,7 @@ const Home = () => {
   const { testModeEnabled } = useTestModeContext();
 
   if (loading) {
-    return null;
+    return <Page />;
   }
 
   const user = data?.user;
@@ -206,14 +206,16 @@ const Home = () => {
                 </Box>
               );
             })}
-            <Link href='/add-dish' passHref>
-              <AddDishBox>
-                <AddDishText>
-                  <AddDishPlus />
-                  Add Dish
-                </AddDishText>
-              </AddDishBox>
-            </Link>
+            {!testModeEnabled && (
+              <Link href='/add-dish' passHref>
+                <AddDishBox>
+                  <AddDishText>
+                    <AddDishPlus />
+                    Add Dish
+                  </AddDishText>
+                </AddDishBox>
+              </Link>
+            )}
           </Dishes>
 
           <Sidebar>
