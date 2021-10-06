@@ -3,16 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": "true",
+  "workspaces": [
+    "@app/*"
+  ],
   "scripts": {
-    "build": "pnpm run build --recursive",
+    "build": "lerna run build",
     "tsc:watch": "tsc -b --watch --preserveWatchOutput",
-    "dev": "concurrently --kill-others --names 'TSC,DEV,WATCH' --prefix '({name})' 'pnpm run tsc:watch' 'pnpm run dev --recursive' 'pnpm run watch --recursive'"
+    "dev": "yarn && lerna run codegen --stream && concurrently --kill-others --names 'TSC,WATCH,DEV' --prefix '({name})' 'tsc -b --watch --preserveWatchOutput' 'lerna run --parallel watch' 'lerna run --parallel dev'"
+
   },
   "author": "Ludwig Bäcklund",
   "license": "MIT",
   "dependencies": {
     "concurrently": "^6.3.0",
     "dotenv": "^10.0.0",
+    "lerna": "^4.0.0",
     "typescript": "4.4.3"
   }
 }

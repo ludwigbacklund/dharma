@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "node -r @app/config/env node_modules/next/dist/bin/next build",
+    "build": "node -r @app/config/env node_modules/.bin/next build",
     "watch": "yarn codegen --watch",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@app/config": "workspace:*",
+    "@app/config": "1.0.0",
     "@apollo/client": "^3.4.15",
     "babel-plugin-styled-components": "^1.13.2",
     "date-fns": "^2.25.0",

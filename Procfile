@@ -1,2 +1,2 @@
-web: pnpm run start --filter @app/server
+web: yarn workspace @app/server start
 release: bin/dbmate up
