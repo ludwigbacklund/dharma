@@ -8,14 +8,14 @@ const isDev = process.env.NODE_ENV === 'development';
 const postgraphileOptions: PostGraphileOptions<Request, Response> = {
   // This is so that PostGraphile installs the watch fixtures, it's also needed to enable live queries
   ownerConnectionString: process.env.DATABASE_URL,
-  // Enable GraphiQL in development
-  graphiql: isDev,
+  // Enable GraphiQL
+  graphiql: true,
   // Use a fancier GraphiQL with `prettier` for formatting, and header editing.
   enhanceGraphiql: true,
   // ignoreIndexes=false: honour your DB indexes - only expose things that are fast
   ignoreIndexes: false,
   // Allow EXPLAIN in development (you can replace this with a callback function if you want more control)
-  allowExplain: isDev,
+  allowExplain: true,
   // https://www.graphile.org/postgraphile/debugging/
   extendedErrors: isDev
     ? [
