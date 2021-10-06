@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { createGlobalStyle } from 'styled-components';
 import {
   AdminModeContextProvider,
@@ -35,6 +36,9 @@ const GlobalStyle = createGlobalStyle`
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <title>Dharma</title>
+      </Head>
       <GlobalStyle />
       <CurrentUserContextProvider>
         <AdminModeContextProvider>

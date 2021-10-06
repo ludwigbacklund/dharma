@@ -201,7 +201,7 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
               errorMessage={errors.description?.message}
             />
             <Input
-              {...register('priceInSek', { required: 'Price is required' }))}
+              {...register('priceInSek', { required: 'Price is required' })}
               type='number'
               name='priceInSek'
               label='Price (SEK)'
