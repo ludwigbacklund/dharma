@@ -46,32 +46,32 @@ insert into app_public.users (name, company_id) values ('Frodemo', 1), ('Gandemo
 insert into app_public.dishes (name, description, image_url, price_in_sek, company_id) values (
     'Chicken Wings',
     'The juiciest, crunchiest wings you''ll find this side of the Atlantic. Yum yum yum.',
-    'https://images.pexels.com/photos/60616/fried-chicken-chicken-fried-crunchy-60616.jpeg', 
+    'https://images.pexels.com/photos/60616/fried-chicken-chicken-fried-crunchy-60616.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750', 
     125,
     1
   ), 
   (
     'Tacos',
     'They call these tacos the mana of gods. Be careful... one bite and you can never go back.',
-    'https://images.pexels.com/photos/8448325/pexels-photo-8448325.jpeg',
+    'https://images.pexels.com/photos/8448325/pexels-photo-8448325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750',
     90,
     1
   ), (
     'Candy',
     'Tasty treats from last year''s Halloween. The kids we took it from had had more than enough anyway.',
-    'https://images.pexels.com/photos/5477991/pexels-photo-5477991.jpeg',
+    'https://images.pexels.com/photos/5477991/pexels-photo-5477991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750',
     65,
     1
   ), (
     'Chips',
     'We bought these at City Gross and sprinkled some wholesale hot sauce on top. Now pay up!',
-    'https://images.pexels.com/photos/568805/pexels-photo-568805.jpeg',
+    'https://images.pexels.com/photos/568805/pexels-photo-568805.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750',
     80,
     1
   ), (
     'Eggs',
     'Yes, eggs. No, there''s nothing special about them. Stop asking so many questions.',
-    'https://images.pexels.com/photos/2959303/pexels-photo-2959303.jpeg',
+    'https://images.pexels.com/photos/2959303/pexels-photo-2959303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750',
     50,
     1
   );

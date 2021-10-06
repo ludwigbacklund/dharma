@@ -15,6 +15,7 @@ importers:
   '@app/client':
     specifiers:
       '@apollo/client': ^3.4.15
+      '@app/config': workspace:*
       '@graphql-codegen/cli': ^2.2.0
       '@graphql-codegen/typescript': ^2.2.2
       '@graphql-codegen/typescript-operations': ^2.1.5
@@ -33,10 +34,12 @@ importers:
       react-hook-form: ^7.7.0
       react-select: ^5.1.0
       styled-components: ^5.3.1
+      subscriptions-transport-ws: ^0.9.19
       tslib: ^2.3.1
       typescript: 4.4.3
     dependencies:
-      '@apollo/client': 3.4.15_graphql@15.6.0+react@17.0.2
+      '@apollo/client': 3.4.15_eb3d266a1592322759ddf0d24bd9533c
+      '@app/config': link:../config
       babel-plugin-styled-components: 1.13.2_styled-components@5.3.1
       date-fns: 2.25.0
       graphql: 15.6.0
@@ -48,6 +51,8 @@ importers:
       react-hook-form: 7.7.0_react@17.0.2
       react-select: 5.1.0_c8ea7ae9f1996cb21e9c3967f824a58b
       styled-components: 5.3.1_react-dom@17.0.2+react@17.0.2
+      subscriptions-transport-ws: 0.9.19_graphql@15.6.0
+      tslib: 2.3.1
     devDependencies:
       '@graphql-codegen/cli': 2.2.0_graphql@15.6.0+typescript@4.4.3
       '@graphql-codegen/typescript': 2.2.2_graphql@15.6.0
@@ -56,12 +61,19 @@ importers:
       '@types/react': 17.0.26
       '@types/react-select': 5.0.1_c8ea7ae9f1996cb21e9c3967f824a58b
       '@types/styled-components': 5.1.14
-      tslib: 2.3.1
       typescript: 4.4.3
+
+  '@app/config':
+    specifiers:
+      dotenv: ^10.0.0
+    dependencies:
+      dotenv: 10.0.0
 
   '@app/server':
     specifiers:
+      '@app/config': workspace:*
       '@graphile-contrib/pg-simplify-inflector': ^6.1.0
+      '@graphile/subscriptions-lds': ^4.12.1
       '@types/express': ^4.17.13
       chalk: 4.0.0
       express: 4.17.1
@@ -72,9 +84,12 @@ importers:
       postgraphile: ^4.12.4
       react: 17.0.2
       react-dom: 17.0.2
+      tslib: ^2.3.1
       typescript: 4.4.3
     dependencies:
+      '@app/config': link:../config
       '@graphile-contrib/pg-simplify-inflector': 6.1.0
+      '@graphile/subscriptions-lds': 4.12.1
       '@types/express': 4.17.13
       chalk: 4.0.0
       express: 4.17.1
@@ -85,11 +100,12 @@ importers:
       postgraphile: 4.12.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      tslib: 2.3.1
       typescript: 4.4.3
 
 packages:
 
-  /@apollo/client/3.4.15_graphql@15.6.0+react@17.0.2:
+  /@apollo/client/3.4.15_eb3d266a1592322759ddf0d24bd9533c:
     resolution: {integrity: sha512-CnlT9i7TgHagkKQNvti81A9KcbIMqgpUPGJJL6bg5spTsB2R/5J6E7qiPcMvXuuXwR2xe4FmE4Ey4HizStb8Hg==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0
@@ -111,6 +127,7 @@ packages:
       optimism: 0.16.1
       prop-types: 15.7.2
       react: 17.0.2
+      subscriptions-transport-ws: 0.9.19_graphql@15.6.0
       symbol-observable: 4.0.0
       ts-invariant: 0.9.3
       tslib: 2.3.1
@@ -783,11 +800,41 @@ packages:
     resolution: {integrity: sha512-3eI2FP4ulu/fxwkJBNXhR6XEzqVz4wJWFr4LfeyUNNArUtLFx0DpP6YdcARCYgwLExFcIQNE8fnul3JKiciYIw==}
     dev: false
 
+  /@graphile/lds/4.12.1:
+    resolution: {integrity: sha512-j8PI23JGc2Pgc4L3F3XkRc23Sl/yQ/qLZDv+giI2B8afXQ+9lEJd3LZ7cS+jkKkbjDVHzy6ueyPq6ibbWObnUg==}
+    hasBin: true
+    dependencies:
+      '@types/pg': 8.6.1
+      '@types/ws': 6.0.4
+      pg: 8.7.1
+      tslib: 2.3.1
+      ws: 7.5.5
+    transitivePeerDependencies:
+      - bufferutil
+      - pg-native
+      - utf-8-validate
+    dev: false
+
   /@graphile/lru/4.11.0:
     resolution: {integrity: sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg==}
     engines: {node: '>=8.6'}
     dependencies:
       tslib: 2.3.1
+    dev: false
+
+  /@graphile/subscriptions-lds/4.12.1:
+    resolution: {integrity: sha512-crGZZjt215Wmy7eDSd6KLWXgxgjSt0L9m0FLGIkrAXCPumv9IIeSGGsj5Sag9pzxbvB1yi9BL9A+qpBKZmrbEw==}
+    peerDependencies:
+      postgraphile-core: '>4.3.1 <5'
+    dependencies:
+      '@graphile/lds': 4.12.1
+      '@types/ws': 6.0.4
+      tslib: 2.3.1
+      ws: 7.5.5
+    transitivePeerDependencies:
+      - bufferutil
+      - pg-native
+      - utf-8-validate
     dev: false
 
   /@graphql-codegen/cli/2.2.0_graphql@15.6.0+typescript@4.4.3:
@@ -1553,6 +1600,12 @@ packages:
     dependencies:
       '@types/node': 16.10.2
     dev: true
+
+  /@types/ws/6.0.4:
+    resolution: {integrity: sha512-PpPrX7SZW9re6+Ha8ojZG4Se8AZXgf0GK6zmfqEuCsY49LFDNXO3SByp44X3dFEqtB73lkCDAdUazhAjVPiNwg==}
+    dependencies:
+      '@types/node': 16.10.2
+    dev: false
 
   /@types/ws/7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}

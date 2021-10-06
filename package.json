@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "pnpm run build --recursive",
     "tsc:watch": "tsc -b --watch --preserveWatchOutput",
     "dev": "concurrently --kill-others --names 'TSC,DEV,WATCH' --prefix '({name})' 'pnpm run tsc:watch' 'pnpm run dev --recursive' 'pnpm run watch --recursive'"
   },
