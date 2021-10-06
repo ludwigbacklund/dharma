@@ -52,14 +52,12 @@ export enum CompaniesOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
-export type Company = Node & {
+export type Company = {
   __typename?: 'Company';
   /** Reads and enables pagination through a set of `Dish`. */
   dishes: DishesConnection;
   id: Scalars['Int'];
   name: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Order`. */
   orders: OrdersConnection;
   /** Reads and enables pagination through a set of `User`. */
@@ -256,17 +254,6 @@ export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
-/** All input for the `deleteCompanyByNodeId` mutation. */
-export type DeleteCompanyByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Company` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
 /** All input for the `deleteCompany` mutation. */
 export type DeleteCompanyInput = {
   /**
@@ -298,17 +285,6 @@ export type DeleteCompanyPayload = {
 /** The output of our delete `Company` mutation. */
 export type DeleteCompanyPayloadCompanyEdgeArgs = {
   orderBy?: Maybe<Array<CompaniesOrderBy>>;
-};
-
-/** All input for the `deleteDishByNodeId` mutation. */
-export type DeleteDishByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Dish` to be deleted. */
-  nodeId: Scalars['ID'];
 };
 
 /** All input for the `deleteDish` mutation. */
@@ -344,17 +320,6 @@ export type DeleteDishPayload = {
 /** The output of our delete `Dish` mutation. */
 export type DeleteDishPayloadDishEdgeArgs = {
   orderBy?: Maybe<Array<DishesOrderBy>>;
-};
-
-/** All input for the `deleteOrderByNodeId` mutation. */
-export type DeleteOrderByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Order` to be deleted. */
-  nodeId: Scalars['ID'];
 };
 
 /** All input for the `deleteOrder` mutation. */
@@ -396,17 +361,6 @@ export type DeleteOrderPayloadOrderEdgeArgs = {
   orderBy?: Maybe<Array<OrdersOrderBy>>;
 };
 
-/** All input for the `deleteUserByNodeId` mutation. */
-export type DeleteUserByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `User` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
 /** All input for the `deleteUser` mutation. */
 export type DeleteUserInput = {
   /**
@@ -442,7 +396,7 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
-export type Dish = Node & {
+export type Dish = {
   __typename?: 'Dish';
   /** Reads a single `Company` that is related to this `Dish`. */
   company?: Maybe<Company>;
@@ -451,8 +405,6 @@ export type Dish = Node & {
   id: Scalars['Int'];
   imageUrl?: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Order`. */
   orders: OrdersConnection;
   priceInSek: Scalars['Int'];
@@ -543,36 +495,20 @@ export type Mutation = {
   createUser?: Maybe<CreateUserPayload>;
   /** Deletes a single `Company` using a unique key. */
   deleteCompany?: Maybe<DeleteCompanyPayload>;
-  /** Deletes a single `Company` using its globally unique id. */
-  deleteCompanyByNodeId?: Maybe<DeleteCompanyPayload>;
   /** Deletes a single `Dish` using a unique key. */
   deleteDish?: Maybe<DeleteDishPayload>;
-  /** Deletes a single `Dish` using its globally unique id. */
-  deleteDishByNodeId?: Maybe<DeleteDishPayload>;
   /** Deletes a single `Order` using a unique key. */
   deleteOrder?: Maybe<DeleteOrderPayload>;
-  /** Deletes a single `Order` using its globally unique id. */
-  deleteOrderByNodeId?: Maybe<DeleteOrderPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
-  /** Deletes a single `User` using its globally unique id. */
-  deleteUserByNodeId?: Maybe<DeleteUserPayload>;
   /** Updates a single `Company` using a unique key and a patch. */
   updateCompany?: Maybe<UpdateCompanyPayload>;
-  /** Updates a single `Company` using its globally unique id and a patch. */
-  updateCompanyByNodeId?: Maybe<UpdateCompanyPayload>;
   /** Updates a single `Dish` using a unique key and a patch. */
   updateDish?: Maybe<UpdateDishPayload>;
-  /** Updates a single `Dish` using its globally unique id and a patch. */
-  updateDishByNodeId?: Maybe<UpdateDishPayload>;
   /** Updates a single `Order` using a unique key and a patch. */
   updateOrder?: Maybe<UpdateOrderPayload>;
-  /** Updates a single `Order` using its globally unique id and a patch. */
-  updateOrderByNodeId?: Maybe<UpdateOrderPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
-  /** Updates a single `User` using its globally unique id and a patch. */
-  updateUserByNodeId?: Maybe<UpdateUserPayload>;
 };
 
 
@@ -607,20 +543,8 @@ export type MutationDeleteCompanyArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteCompanyByNodeIdArgs = {
-  input: DeleteCompanyByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteDishArgs = {
   input: DeleteDishInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteDishByNodeIdArgs = {
-  input: DeleteDishByNodeIdInput;
 };
 
 
@@ -631,20 +555,8 @@ export type MutationDeleteOrderArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrderByNodeIdArgs = {
-  input: DeleteOrderByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByNodeIdArgs = {
-  input: DeleteUserByNodeIdInput;
 };
 
 
@@ -655,20 +567,8 @@ export type MutationUpdateCompanyArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateCompanyByNodeIdArgs = {
-  input: UpdateCompanyByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateDishArgs = {
   input: UpdateDishInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateDishByNodeIdArgs = {
-  input: UpdateDishByNodeIdInput;
 };
 
 
@@ -679,36 +579,16 @@ export type MutationUpdateOrderArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrderByNodeIdArgs = {
-  input: UpdateOrderByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByNodeIdArgs = {
-  input: UpdateUserByNodeIdInput;
-};
-
-/** An object with a globally unique `ID`. */
-export type Node = {
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-};
-
-export type Order = Node & {
+export type Order = {
   __typename?: 'Order';
   createdAt: Scalars['Datetime'];
   /** Reads a single `Dish` that is related to this `Order`. */
   dish?: Maybe<Dish>;
   dishId: Scalars['Int'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads a single `User` that is related to this `Order`. */
   user?: Maybe<User>;
   userId: Scalars['Int'];
@@ -787,25 +667,15 @@ export type PageInfo = {
 };
 
 /** The root query type which gives access points into the data universe. */
-export type Query = Node & {
+export type Query = {
   __typename?: 'Query';
   /** Reads and enables pagination through a set of `Company`. */
   companies?: Maybe<CompaniesConnection>;
   company?: Maybe<Company>;
-  /** Reads a single `Company` using its globally unique `ID`. */
-  companyByNodeId?: Maybe<Company>;
   dish?: Maybe<Dish>;
-  /** Reads a single `Dish` using its globally unique `ID`. */
-  dishByNodeId?: Maybe<Dish>;
   /** Reads and enables pagination through a set of `Dish`. */
   dishes?: Maybe<DishesConnection>;
-  /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<Node>;
-  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
-  nodeId: Scalars['ID'];
   order?: Maybe<Order>;
-  /** Reads a single `Order` using its globally unique `ID`. */
-  orderByNodeId?: Maybe<Order>;
   /** Reads and enables pagination through a set of `Order`. */
   orders?: Maybe<OrdersConnection>;
   /**
@@ -814,8 +684,6 @@ export type Query = Node & {
    */
   query: Query;
   user?: Maybe<User>;
-  /** Reads a single `User` using its globally unique `ID`. */
-  userByNodeId?: Maybe<User>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>;
 };
@@ -840,20 +708,8 @@ export type QueryCompanyArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryCompanyByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryDishArgs = {
   id: Scalars['Int'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryDishByNodeIdArgs = {
-  nodeId: Scalars['ID'];
 };
 
 
@@ -870,22 +726,10 @@ export type QueryDishesArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryNodeArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryOrderArgs = {
   createdAt: Scalars['Datetime'];
   dishId: Scalars['Int'];
   userId: Scalars['Int'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryOrderByNodeIdArgs = {
-  nodeId: Scalars['ID'];
 };
 
 
@@ -908,12 +752,6 @@ export type QueryUserArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryUsersArgs = {
   after?: Maybe<Scalars['Cursor']>;
   before?: Maybe<Scalars['Cursor']>;
@@ -922,19 +760,6 @@ export type QueryUsersArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<UsersOrderBy>>;
-};
-
-/** All input for the `updateCompanyByNodeId` mutation. */
-export type UpdateCompanyByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Company` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Company` being updated. */
-  patch: CompanyPatch;
 };
 
 /** All input for the `updateCompany` mutation. */
@@ -971,19 +796,6 @@ export type UpdateCompanyPayloadCompanyEdgeArgs = {
   orderBy?: Maybe<Array<CompaniesOrderBy>>;
 };
 
-/** All input for the `updateDishByNodeId` mutation. */
-export type UpdateDishByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Dish` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Dish` being updated. */
-  patch: DishPatch;
-};
-
 /** All input for the `updateDish` mutation. */
 export type UpdateDishInput = {
   /**
@@ -1018,19 +830,6 @@ export type UpdateDishPayload = {
 /** The output of our update `Dish` mutation. */
 export type UpdateDishPayloadDishEdgeArgs = {
   orderBy?: Maybe<Array<DishesOrderBy>>;
-};
-
-/** All input for the `updateOrderByNodeId` mutation. */
-export type UpdateOrderByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Order` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Order` being updated. */
-  patch: OrderPatch;
 };
 
 /** All input for the `updateOrder` mutation. */
@@ -1073,19 +872,6 @@ export type UpdateOrderPayloadOrderEdgeArgs = {
   orderBy?: Maybe<Array<OrdersOrderBy>>;
 };
 
-/** All input for the `updateUserByNodeId` mutation. */
-export type UpdateUserByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `User` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
-};
-
 /** All input for the `updateUser` mutation. */
 export type UpdateUserInput = {
   /**
@@ -1122,15 +908,13 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
-export type User = Node & {
+export type User = {
   __typename?: 'User';
   /** Reads a single `Company` that is related to this `User`. */
   company?: Maybe<Company>;
   companyId: Scalars['Int'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Order`. */
   orders: OrdersConnection;
 };

@@ -1,6 +1,7 @@
 import { Express, Request, Response } from 'express';
 import { Pool } from 'pg';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
+import { NodePlugin } from 'graphile-build';
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -41,6 +42,7 @@ const postgraphileOptions: PostGraphileOptions<Request, Response> = {
   sortExport: true,
   // Plugins to customize GraphQL schema
   appendPlugins: [PgSimplifyInflectorPlugin],
+  skipPlugins: [NodePlugin],
   exportGqlSchemaPath: isDev
     ? `${__dirname}/../../../../data/schema.graphql`
     : undefined,
