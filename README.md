@@ -16,7 +16,7 @@ The application runs only one process, the Express server, with the Next.js clie
 
 The server resolves around an Express server and PostGraphile, a library that builds a performant, customizable GraphQL API for you based on your PostgreSQL database schema. This speeds up development by reducing boilerplate and CRUD code.
 
-The client is a Next.js TypeScript application running apollo-client to communicate with the server GraphQL API. Furthermore, graphql-codegen is used to get full end-to-end type safety from server to client during development.
+The client is a Next.js TypeScript application running apollo-client to communicate with the server's GraphQL API. Furthermore, graphql-codegen is used to get full end-to-end type safety from server to client during development.
 
 ## Getting started
 
@@ -47,6 +47,8 @@ That's it. Open the URL linked to in the terminal and enjoy!
 ## Omitted on purpose
 
 The following functionality has been intentionally left out due to time constraints and prioritizing other things.
+
+If you are curious, I have another personal project that implements pretty much all of these things with a setup similar to this project (but more advanced): [`saas` project on GitHub](https://github.com/ludwigbacklund/saas).
 
 - Authentication/authorization
 - Security in general
