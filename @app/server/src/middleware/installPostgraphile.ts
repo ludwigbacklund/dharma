@@ -50,6 +50,7 @@ const postgraphileOptions: PostGraphileOptions<Request, Response> = {
 
 const pgPool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
 export default function installPostGraphile(app: Express) {
