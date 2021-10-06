@@ -10,7 +10,7 @@ async function main() {
   installPostgraphile(app);
   await installNextJs(app);
 
-  const PORT = 3000;
+  const PORT = parseInt(process.env.PORT || '', 10) || 3000;
   app.listen(PORT, () => {
     console.log(' ');
     console.log(
