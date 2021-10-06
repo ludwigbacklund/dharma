@@ -18,6 +18,8 @@ The server resolves around an Express server and PostGraphile, a library that bu
 
 The client is a Next.js TypeScript application running apollo-client to communicate with the server's GraphQL API. Furthermore, graphql-codegen is used to get full end-to-end type safety from server to client during development.
 
+The client and server code is found in their respective folders under `./@app` and the database schema can be found in `./db/migrations`.
+
 ## Getting started
 
 1. Install [docker + docker-compose](https://docs.docker.com/get-docker/) and [dbmate](https://github.com/amacneil/dbmate#installation)
