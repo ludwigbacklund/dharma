@@ -10,7 +10,7 @@ Keep in mind that it is running the hobby tier of Heroku Postgres so don't put i
 
 ## Summary
 
-This is a TypeScript monorepo containing a client, server and configuration. It is backed by a PostgreSQL database running locally via docker-compose and hosted by Heroku in production.
+This is a TypeScript monorepo (powered by [yarn workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/)) containing a client, server and configuration. It is backed by a PostgreSQL database running locally via docker-compose and hosted by Heroku in production.
 
 The application runs only one process, the Express server, with the Next.js client being mounted as middleware to that server. This makes it easier to deploy, and keeps moving parts to a minimum.
 
