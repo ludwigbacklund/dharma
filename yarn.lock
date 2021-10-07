@@ -595,33 +595,12 @@
   resolved "https://registry.yarnpkg.com/@graphile-contrib/pg-simplify-inflector/-/pg-simplify-inflector-6.1.0.tgz#5ecb842bd43af4d3ffdfcd25b1e7c452374f7440"
   integrity sha512-3eI2FP4ulu/fxwkJBNXhR6XEzqVz4wJWFr4LfeyUNNArUtLFx0DpP6YdcARCYgwLExFcIQNE8fnul3JKiciYIw==
 
-"@graphile/lds@4.12.1":
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/@graphile/lds/-/lds-4.12.1.tgz#747e5c05eb261c622c3aba5ade41c3ade8de6022"
-  integrity sha512-j8PI23JGc2Pgc4L3F3XkRc23Sl/yQ/qLZDv+giI2B8afXQ+9lEJd3LZ7cS+jkKkbjDVHzy6ueyPq6ibbWObnUg==
-  dependencies:
-    "@types/pg" ">=6 <9"
-    "@types/ws" "^6.0.1"
-    pg ">=6.1.0 <9"
-    tslib "^2.0.1"
-    ws "^7.0.0"
-
 "@graphile/lru@4.11.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@graphile/lru/-/lru-4.11.0.tgz#dd805ee083063488796ec0eac5a8b50b21c076f9"
   integrity sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg==
   dependencies:
     tslib "^2.0.1"
-
-"@graphile/subscriptions-lds@^4.12.1":
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/@graphile/subscriptions-lds/-/subscriptions-lds-4.12.1.tgz#fef72a1666e88726a0e4db52a2ba5feb56339d0c"
-  integrity sha512-crGZZjt215Wmy7eDSd6KLWXgxgjSt0L9m0FLGIkrAXCPumv9IIeSGGsj5Sag9pzxbvB1yi9BL9A+qpBKZmrbEw==
-  dependencies:
-    "@graphile/lds" "4.12.1"
-    "@types/ws" "^6.0.1"
-    tslib "^2.0.1"
-    ws "^7.0.0"
 
 "@graphql-codegen/cli@^2.2.0":
   version "2.2.0"
@@ -2152,13 +2131,6 @@
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@types/websocket/-/websocket-1.0.4.tgz#1dc497280d8049a5450854dd698ee7e6ea9e60b8"
   integrity sha512-qn1LkcFEKK8RPp459jkjzsfpbsx36BBt3oC3pITYtkoBw/aVX+EZFa5j3ThCRTNpLFvIMr5dSTD4RaMdilIOpA==
-  dependencies:
-    "@types/node" "*"
-
-"@types/ws@^6.0.1":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-6.0.4.tgz#7797707c8acce8f76d8c34b370d4645b70421ff1"
-  integrity sha512-PpPrX7SZW9re6+Ha8ojZG4Se8AZXgf0GK6zmfqEuCsY49LFDNXO3SByp44X3dFEqtB73lkCDAdUazhAjVPiNwg==
   dependencies:
     "@types/node" "*"
 
@@ -8541,7 +8513,7 @@ subscriptions-transport-ws@^0.10.0:
     symbol-observable "^1.0.4"
     ws "^5.2.0 || ^6.0.0 || ^7.0.0"
 
-subscriptions-transport-ws@^0.9.18, subscriptions-transport-ws@^0.9.19:
+subscriptions-transport-ws@^0.9.18:
   version "0.9.19"
   resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.9.19.tgz#10ca32f7e291d5ee8eb728b9c02e43c52606cdcf"
   integrity sha512-dxdemxFFB0ppCLg10FTtRqH/31FNRL1y1BQv8209MK5I4CwALb7iihQg+7p65lFcIl8MHatINWBLOqpgU4Kyyw==
@@ -9363,7 +9335,7 @@ ws@8.2.2:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.2.2.tgz#ca684330c6dd6076a737250ed81ac1606cb0a63e"
   integrity sha512-Q6B6H2oc8QY3llc3cB8kVmQ6pnJWVQbP7Q5algTcIxx7YEpc0oU4NBVHlztA7Ekzfhw2r0rPducMUiCGWKQRzw==
 
-"ws@^5.2.0 || ^6.0.0 || ^7.0.0", ws@^7.0.0, ws@^7.4.2:
+"ws@^5.2.0 || ^6.0.0 || ^7.0.0", ws@^7.4.2:
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
   integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
