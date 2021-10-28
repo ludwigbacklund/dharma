@@ -9,7 +9,10 @@ import { useHomeQuery, useOrderDishMutation } from '../generated/graphql';
 import { media } from '../utils/styling';
 import { withGraphql } from '../utils/with-apollo';
 import { Heading } from '../components/Heading';
-import { useAdminModeContext } from '../components/AdminModeToggle';
+import {
+  AdminModeToggle,
+  useAdminModeContext,
+} from '../components/AdminModeToggle';
 import {
   CompanyLatestOrders,
   UserLatestOrders,
@@ -147,83 +150,90 @@ const Home = () => {
   }
 
   return (
-    <Page>
-      <Section>
-        <Heading>
-          {user.company.name}
-          {user.company.name.endsWith('s') ? "'" : "'s"} menu
-        </Heading>
-        <Content>
-          <Dishes>
-            {user.company.dishes.nodes.map((dish, i) => {
-              if (!dish) return;
+    <>
+      <AdminModeToggle />
+      <Page>
+        <Section>
+          <Heading>
+            {user.company.name}
+            {user.company.name.endsWith('s') ? "'" : "'s"} menu
+          </Heading>
+          <Content>
+            <Dishes>
+              {user.company.dishes.nodes.map((dish, i) => {
+                if (!dish) return;
 
-              return (
-                <Box key={dish.id}>
-                  {dish.imageUrl && (
-                    <ImageWrapper>
-                      <DishImage
-                        src={dish.imageUrl}
-                        layout='fill'
-                        objectFit='cover'
-                        // Pre-load the first ten images, lazy-load the rest.
-                        priority={i < 10 ? true : false}
-                      />
-                    </ImageWrapper>
-                  )}
-                  <DishInfo>
-                    <div>
-                      <DishName>{dish.name}</DishName>
-                      {dish.description && (
-                        <DishDescription>{dish.description}</DishDescription>
-                      )}
-                    </div>
-                    <DishBottomWrapper>
-                      <DishPrice>
-                        {dish.priceInSek.toLocaleString()} kr
-                      </DishPrice>
-                      {adminModeEnabled ? (
-                        <Link href={`/edit-dish/${dish.id}`} passHref>
-                          <DishAnchor>Edit dish</DishAnchor>
-                        </Link>
-                      ) : (
-                        <DishAnchor
-                          as='button'
-                          onClick={() =>
-                            orderDish({
-                              variables: {
-                                userId: currentUserId,
-                                dishId: dish.id,
-                              },
-                            })
-                          }
-                        >
-                          Order
-                        </DishAnchor>
-                      )}
-                    </DishBottomWrapper>
-                  </DishInfo>
-                </Box>
-              );
-            })}
-            {adminModeEnabled && (
-              <Link href='/add-dish' passHref>
-                <AddDishBox>
-                  <AddDishText>
-                    <AddDishPlus />
-                    Add Dish
-                  </AddDishText>
-                </AddDishBox>
-              </Link>
-            )}
-          </Dishes>
+                return (
+                  <Box key={dish.id}>
+                    {dish.imageUrl && (
+                      <ImageWrapper>
+                        <DishImage
+                          src={dish.imageUrl}
+                          layout='fill'
+                          objectFit='cover'
+                          // Pre-load the first ten images, lazy-load the rest.
+                          priority={i < 10 ? true : false}
+                        />
+                      </ImageWrapper>
+                    )}
+                    <DishInfo>
+                      <div>
+                        <DishName>{dish.name}</DishName>
+                        {dish.description && (
+                          <DishDescription>{dish.description}</DishDescription>
+                        )}
+                      </div>
+                      <DishBottomWrapper>
+                        <DishPrice>
+                          {dish.priceInSek.toLocaleString()} kr
+                        </DishPrice>
+                        {adminModeEnabled ? (
+                          <Link href={`/edit-dish/${dish.id}`} passHref>
+                            <DishAnchor>Edit dish</DishAnchor>
+                          </Link>
+                        ) : (
+                          <DishAnchor
+                            as='button'
+                            onClick={() =>
+                              orderDish({
+                                variables: {
+                                  userId: currentUserId,
+                                  dishId: dish.id,
+                                },
+                              })
+                            }
+                          >
+                            Order
+                          </DishAnchor>
+                        )}
+                      </DishBottomWrapper>
+                    </DishInfo>
+                  </Box>
+                );
+              })}
+              {adminModeEnabled && (
+                <Link href='/add-dish' passHref>
+                  <AddDishBox>
+                    <AddDishText>
+                      <AddDishPlus />
+                      Add Dish
+                    </AddDishText>
+                  </AddDishBox>
+                </Link>
+              )}
+            </Dishes>
 
-          <Sidebar>
-            {adminModeEnabled ? <CompanyLatestOrders /> : <UserLatestOrders />}
-          </Sidebar>
-        </Content>
-      </Section>
-    </Page>
+            <Sidebar>
+              {adminModeEnabled ? (
+                <CompanyLatestOrders />
+              ) : (
+                <UserLatestOrders />
+              )}
+            </Sidebar>
+          </Content>
+        </Section>
+      </Page>
+    </>
   );
 };
 

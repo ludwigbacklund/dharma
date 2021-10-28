@@ -43,7 +43,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CurrentUserContextProvider>
         <AdminModeContextProvider>
           <Component {...pageProps} />
-          <AdminModeToggle />
         </AdminModeContextProvider>
       </CurrentUserContextProvider>
     </>
