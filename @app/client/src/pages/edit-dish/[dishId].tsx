@@ -46,10 +46,11 @@ const ImageWrapper = styled.div`
   border-radius: 4px;
   box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
     rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
-  margin-right: 24px;
+  margin: 0 24px 0 0;
 
   ${media.tabletDown} {
-    margin-bottom: 16px;
+    margin: 0 0 16px 0;
+    width: 100%;
   }
 `;
 
