@@ -70,17 +70,7 @@ const AddDish = () => {
     formState: { isDirty, errors },
   } = useForm<FormInputs>();
   const [addDish] = useAddDishMutation();
-  const [showSuccessText, setShowSuccessText] = useState(false);
   const { push } = useRouter();
-
-  useEffect(() => {
-    if (!showSuccessText) return;
-
-    const timeout = setTimeout(() => setShowSuccessText(false), 5000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  });
 
   const onSubmit = async ({
     name,
