@@ -246,7 +246,14 @@ const EditDishPage = () => {
   }
 
   if (error || !dish) {
-    return <p>Something went wrong</p>;
+    return (
+      <Page>
+        <Section>
+          <h1>Something went wrong fetching this dish.</h1>
+          <p>Please try again later.</p>
+        </Section>
+      </Page>
+    );
   }
 
   return <EditDish dish={dish} />;

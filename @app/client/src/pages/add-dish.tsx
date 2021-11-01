@@ -12,6 +12,7 @@ import { Input } from '../components/Input';
 import { Heading } from '../components/Heading';
 import { media } from '../utils/styling';
 import { useRouter } from 'next/dist/client/router';
+import { ErrorNotice } from '../components/ErrorNotice';
 
 const BackAnchor = styled.a`
   display: block;
@@ -69,7 +70,7 @@ const AddDish = () => {
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormInputs>();
-  const [addDish] = useAddDishMutation();
+  const [addDish, { error }] = useAddDishMutation();
   const { push } = useRouter();
 
   const onSubmit = async ({
@@ -93,6 +94,9 @@ const AddDish = () => {
   return (
     <Page>
       <Section>
+        {error && (
+          <ErrorNotice message='Something went wrong adding this dish. Please try again later.' />
+        )}
         <Link href='/' passHref>
           <BackAnchor>Back to menu</BackAnchor>
         </Link>
