@@ -10,6 +10,7 @@ import {
   useOrderDishMutation,
 } from '../../generated/graphql';
 import { useCurrentUserContext } from '../../utils/use-current-user';
+import { media } from '../../utils/styling';
 
 const Box = styled.div`
   display: flex;
@@ -21,9 +22,14 @@ const Box = styled.div`
 `;
 
 const ImageWrapper = styled.div`
-  min-width: 100px;
-  min-height: 100px;
+  min-width: 125px;
+  min-height: 125px;
   position: relative;
+
+  ${media.tabletDown} {
+    min-width: 100px;
+    min-height: 100px;
+  }
 `;
 
 const DishImage = styled(Image)`
