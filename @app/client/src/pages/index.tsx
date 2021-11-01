@@ -91,7 +91,14 @@ const Home = () => {
   const user = data?.user;
 
   if (error || !user || !user.company) {
-    return <p>Something went wrong</p>;
+    return (
+      <Page>
+        <Section>
+          <Heading>Something went wrong fetching this menu.</Heading>
+          <p>Please try again later.</p>
+        </Section>
+      </Page>
+    );
   }
 
   return (
