@@ -48,16 +48,16 @@ const Input = styled.input`
   }
 `;
 
-export const Toggle = ({
-  onChange,
-  className,
-}: {
+interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  checked: boolean;
   className?: string;
-}) => {
+}
+
+export const Toggle = ({ onChange, checked, className }: Props) => {
   return (
     <Switch className={className}>
-      <Input type='checkbox' onChange={onChange} />
+      <Input type='checkbox' checked={checked} onChange={onChange} />
       <Slider />
     </Switch>
   );

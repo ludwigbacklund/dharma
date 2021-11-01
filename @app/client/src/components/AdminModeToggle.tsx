@@ -51,12 +51,13 @@ const Text = styled.span`
 `;
 
 export const AdminModeToggle = () => {
-  const { setAdminModeEnabled } = useAdminModeContext();
+  const { adminModeEnabled, setAdminModeEnabled } = useAdminModeContext();
 
   return (
     <Wrapper>
       <Text>Toggle admin mode</Text>
       <Toggle
+        checked={adminModeEnabled}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setAdminModeEnabled(e.target.checked)
         }
