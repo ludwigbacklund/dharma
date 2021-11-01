@@ -216,7 +216,13 @@ const EditDish = ({ dish }: { dish: DishQuery['dish'] }) => {
               optional
               errorMessage={errors.imageUrl?.message}
             />
-            <ImageNotice>Please use a images.pexels.com image URL.</ImageNotice>
+            <ImageNotice>
+              Please use a{' '}
+              <a rel='noref noreferrer' href='https://pexels.com'>
+                images.pexels.com
+              </a>{' '}
+              image URL.
+            </ImageNotice>
             <ButtonInput type='submit' value='Save' disabled={!isDirty} />
             <DeleteButtonInput
               type='button'

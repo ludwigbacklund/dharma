@@ -134,7 +134,13 @@ const AddDish = () => {
               optional
               errorMessage={errors.imageUrl?.message}
             />
-            <ImageNotice>Please use a images.pexels.com image URL.</ImageNotice>
+            <ImageNotice>
+              Please use a{' '}
+              <a rel='noref noreferrer' href='https://pexels.com'>
+                images.pexels.com
+              </a>{' '}
+              image URL.
+            </ImageNotice>
             {isDirty && <SaveButtonInput type='submit' value='Add dish' />}
           </StyledForm>
         </Wrapper>
