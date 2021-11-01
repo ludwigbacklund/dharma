@@ -1008,6 +1008,8 @@ export type CompanyOrdersQueryVariables = Exact<{
 
 export type CompanyOrdersQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, company?: { __typename?: 'Company', id: number, orders: { __typename?: 'OrdersConnection', nodes: Array<{ __typename?: 'Order', dishId: number, userId: number, createdAt: string, dish?: { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined } | null | undefined, user?: { __typename?: 'User', id: number, name: string } | null | undefined } | null | undefined> } } | null | undefined } | null | undefined };
 
+export type DishFieldsFragment = { __typename?: 'Dish', id: number, name: string, imageUrl?: string | null | undefined, description?: string | null | undefined, priceInSek: number };
+
 export type AddDishMutationVariables = Exact<{
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -1072,6 +1074,15 @@ export const OrderPreviewFragmentDoc = gql`
     id
     name
   }
+}
+    `;
+export const DishFieldsFragmentDoc = gql`
+    fragment DishFields on Dish {
+  id
+  name
+  imageUrl
+  description
+  priceInSek
 }
     `;
 export const HeaderDocument = gql`
@@ -1381,17 +1392,13 @@ export const HomeDocument = gql`
       name
       dishes {
         nodes {
-          id
-          name
-          imageUrl
-          description
-          priceInSek
+          ...DishFields
         }
       }
     }
   }
 }
-    `;
+    ${DishFieldsFragmentDoc}`;
 
 /**
  * __useHomeQuery__

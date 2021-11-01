@@ -1,11 +1,10 @@
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { Page } from '../components/Page';
 import { Section } from '../components/Section';
-import { useHomeQuery, useOrderDishMutation } from '../generated/graphql';
+import { useHomeQuery } from '../generated/graphql';
 import { media } from '../utils/styling';
 import { withGraphql } from '../utils/with-apollo';
 import { Heading } from '../components/Heading';
@@ -19,6 +18,7 @@ import {
 } from '../components/OrdersPreview';
 import { useCurrentUserContext } from '../utils/use-current-user';
 import { PlusIcon } from '../components/icons/Plus';
+import { Dish, DISH_FRAGMENT } from '../modules/index/Dish';
 
 const Content = styled.div`
   display: flex;
@@ -50,67 +50,13 @@ const Sidebar = styled.div`
   }
 `;
 
-const Box = styled.div`
+const AddDishBox = styled.a`
   display: flex;
   width: 100%;
   background: white;
   border-radius: 4px;
   box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
     rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
-`;
-
-const ImageWrapper = styled.div`
-  min-width: 150px;
-  min-height: 125px;
-  position: relative;
-`;
-
-const DishImage = styled(Image)`
-  border-radius: 4px 0 0 4px;
-`;
-
-const DishInfo = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px;
-`;
-
-const DishName = styled.h2`
-  font-size: 24px;
-  margin: 0;
-  font-weight: bold;
-`;
-
-const DishDescription = styled.p`
-  margin: 8px 0 0 0;
-`;
-
-const DishPrice = styled.h3`
-  margin: 0;
-`;
-
-const DishBottomWrapper = styled.div`
-  margin: 16px 0 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const DishAnchor = styled.a`
-  border: 1px solid #3a3a3a;
-  background: white;
-  border-radius: 4px;
-  padding: 4px;
-  cursor: pointer;
-
-  :hover {
-    opacity: 0.5;
-  }
-`;
-
-const AddDishBox = styled(Box).attrs({ as: 'a' })`
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -136,7 +82,6 @@ const Home = () => {
   const { data, loading, error } = useHomeQuery({
     variables: { userId: currentUserId },
   });
-  const [orderDish] = useOrderDishMutation();
   const { adminModeEnabled } = useAdminModeContext();
 
   if (loading) {
@@ -164,51 +109,12 @@ const Home = () => {
                 if (!dish) return;
 
                 return (
-                  <Box key={dish.id}>
-                    {dish.imageUrl && (
-                      <ImageWrapper>
-                        <DishImage
-                          src={dish.imageUrl}
-                          layout='fill'
-                          objectFit='cover'
-                          // Pre-load the first ten images, lazy-load the rest.
-                          priority={i < 10 ? true : false}
-                        />
-                      </ImageWrapper>
-                    )}
-                    <DishInfo>
-                      <div>
-                        <DishName>{dish.name}</DishName>
-                        {dish.description && (
-                          <DishDescription>{dish.description}</DishDescription>
-                        )}
-                      </div>
-                      <DishBottomWrapper>
-                        <DishPrice>
-                          {dish.priceInSek.toLocaleString()} kr
-                        </DishPrice>
-                        {adminModeEnabled ? (
-                          <Link href={`/edit-dish/${dish.id}`} passHref>
-                            <DishAnchor>Edit dish</DishAnchor>
-                          </Link>
-                        ) : (
-                          <DishAnchor
-                            as='button'
-                            onClick={() =>
-                              orderDish({
-                                variables: {
-                                  userId: currentUserId,
-                                  dishId: dish.id,
-                                },
-                              })
-                            }
-                          >
-                            Order
-                          </DishAnchor>
-                        )}
-                      </DishBottomWrapper>
-                    </DishInfo>
-                  </Box>
+                  <Dish
+                    key={dish.id}
+                    dish={dish}
+                    // Pre-load the first ten images, lazy-load the rest.
+                    preloadImage={i < 10 ? true : false}
+                  />
                 );
               })}
               {adminModeEnabled && (
@@ -247,16 +153,13 @@ const HOME_QUERY = gql`
         name
         dishes {
           nodes {
-            id
-            name
-            imageUrl
-            description
-            priceInSek
+            ...DishFields
           }
         }
       }
     }
   }
+  ${DISH_FRAGMENT}
 `;
 
 const ORDER_DISH_MUTATION = gql`
