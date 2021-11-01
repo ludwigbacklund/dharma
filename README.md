@@ -2,9 +2,9 @@
 
 Dharma is a food ordering web-app that lets companies upload their menu and users to put in orders for food.
 
-Try it out: https://dharma-karma.herokuapp.com/
+Try it out: https://dharma-case.herokuapp.com/
 
-Play with the API: https://dharma-karma.herokuapp.com/graphiql
+Play with the API: https://dharma-case.herokuapp.com/graphiql
 
 Keep in mind that it is running the hobby tier of Heroku Postgres so don't put in more than 10,000 orders! 😅
 
