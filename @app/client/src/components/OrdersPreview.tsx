@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import {
   OrderPreviewFragment,
@@ -16,13 +16,36 @@ const Heading = styled.span`
   margin-bottom: 16px;
 `;
 
-const Order = styled.div`
+type OrderProps = {
+  animate: boolean;
+};
+
+const Order = styled.div<OrderProps>`
   position: relative;
   height: 100%;
   margin-bottom: 16px;
   padding: 8px 16px;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation-duration: 500ms;
+      animation-name: slidein;
+    `}
+
+  @keyframes slidein {
+    from {
+      top: -20px;
+      opacity: 0;
+    }
+
+    to {
+      top: 0px;
+      opacity: 1;
+    }
+  }
 `;
 
 const OrderText = styled.p`
@@ -66,17 +89,18 @@ const OrderTime = styled.span`
 
 interface Props {
   orders: OrderPreviewFragment[];
+  animateNewOrders: boolean;
   customName?: string;
 }
 
-const OrdersPreview = ({ orders, customName }: Props) => {
+const OrdersPreview = ({ orders, animateNewOrders, customName }: Props) => {
   if (orders.length === 0) {
     return <span>No orders placed yet</span>;
   }
 
   return (
     <>
-      {orders.map((order) => {
+      {orders.map((order, i) => {
         const orderTime = formatDistance(
           new Date(order.createdAt),
           new Date(),
@@ -86,7 +110,10 @@ const OrdersPreview = ({ orders, customName }: Props) => {
         );
 
         return (
-          <Order key={`${order.dishId}-${order.userId}-${order.createdAt}`}>
+          <Order
+            animate={animateNewOrders && i === 0}
+            key={`${order.dishId}-${order.userId}-${order.createdAt}`}
+          >
             <OrderText>
               {customName ? customName : order.user?.name} ordered{' '}
               {order.dish?.name}
@@ -112,8 +139,14 @@ const OrdersPreview = ({ orders, customName }: Props) => {
 
 export const UserLatestOrders = () => {
   const { currentUserId } = useCurrentUserContext();
-  const { data } = useUserOrdersQuery({ variables: { userId: currentUserId } });
+  const { data, previousData } = useUserOrdersQuery({
+    variables: { userId: currentUserId },
+  });
   if (!data?.user) return null;
+
+  // Only animate orders that were just placed, not when switching between users or loading the page for the first time.
+  const animateNewOrders =
+    previousData !== undefined && data?.user?.id === previousData?.user?.id;
 
   return (
     <div>
@@ -121,6 +154,7 @@ export const UserLatestOrders = () => {
       <OrdersPreview
         customName='You'
         orders={data.user.orders.nodes.filter(isDefined)}
+        animateNewOrders={animateNewOrders}
       />
     </div>
   );
@@ -128,16 +162,21 @@ export const UserLatestOrders = () => {
 
 export const CompanyLatestOrders = () => {
   const { currentUserId } = useCurrentUserContext();
-  const { data } = useCompanyOrdersQuery({
+  const { data, previousData } = useCompanyOrdersQuery({
     variables: { userId: currentUserId },
   });
   if (!data?.user?.company) return null;
+
+  // Only animate orders that were just placed, not when switching between users or loading the page for the first time.
+  const animateNewOrders =
+    previousData !== undefined && data?.user?.id === previousData?.user?.id;
 
   return (
     <div>
       <Heading>Latest orders</Heading>
       <OrdersPreview
         orders={data.user.company.orders.nodes.filter(isDefined)}
+        animateNewOrders={animateNewOrders}
       />
     </div>
   );
