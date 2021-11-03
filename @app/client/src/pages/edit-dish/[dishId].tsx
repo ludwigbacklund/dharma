@@ -248,7 +248,7 @@ const EditDishPage = () => {
   const dish = data?.dish;
 
   if (loading) {
-    return null;
+    return <Page />;
   }
 
   if (error || !dish) {
