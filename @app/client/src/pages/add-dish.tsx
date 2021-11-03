@@ -111,6 +111,13 @@ const AddDish = () => {
               errorMessage={errors.name?.message}
             />
             <Input
+              {...register('priceInSek', { required: 'Price is required' })}
+              type='number'
+              name='priceInSek'
+              label='Price (SEK)'
+              errorMessage={errors.priceInSek?.message}
+            />
+            <Input
               {...register('description')}
               tag='textarea'
               type='text'
@@ -118,13 +125,6 @@ const AddDish = () => {
               label='Description'
               optional
               errorMessage={errors.description?.message}
-            />
-            <Input
-              {...register('priceInSek', { required: 'Price is required' })}
-              type='number'
-              name='priceInSek'
-              label='Price (SEK)'
-              errorMessage={errors.priceInSek?.message}
             />
             <Input
               {...register('imageUrl')}
