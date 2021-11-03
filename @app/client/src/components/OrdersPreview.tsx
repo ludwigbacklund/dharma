@@ -89,11 +89,11 @@ const OrderTime = styled.span`
 
 interface Props {
   orders: OrderPreviewFragment[];
-  animateNewOrders: boolean;
+  animateLatestOrder: boolean;
   customName?: string;
 }
 
-const OrdersPreview = ({ orders, animateNewOrders, customName }: Props) => {
+const OrdersPreview = ({ orders, animateLatestOrder, customName }: Props) => {
   if (orders.length === 0) {
     return <span>No orders placed yet</span>;
   }
@@ -111,7 +111,7 @@ const OrdersPreview = ({ orders, animateNewOrders, customName }: Props) => {
 
         return (
           <Order
-            animate={animateNewOrders && i === 0}
+            animate={animateLatestOrder && i === 0}
             key={`${order.dishId}-${order.userId}-${order.createdAt}`}
           >
             <OrderText>
@@ -154,7 +154,7 @@ export const UserLatestOrders = () => {
       <OrdersPreview
         customName='You'
         orders={data.user.orders.nodes.filter(isDefined)}
-        animateNewOrders={animateNewOrders}
+        animateLatestOrder={animateNewOrders}
       />
     </div>
   );
@@ -176,7 +176,7 @@ export const CompanyLatestOrders = () => {
       <Heading>Latest orders</Heading>
       <OrdersPreview
         orders={data.user.company.orders.nodes.filter(isDefined)}
-        animateNewOrders={animateNewOrders}
+        animateLatestOrder={animateNewOrders}
       />
     </div>
   );
